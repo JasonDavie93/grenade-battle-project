@@ -3,7 +3,7 @@
 #include "Player.h"
 #include "Platform.h"
 #include <SFML/Graphics.hpp>
-#include "Door.h"
+//#include "Door.h"
 
 class Game;
 
@@ -22,6 +22,6 @@ private:
 
     Player player;
     Platform testPlatform;
-    Door testDoor;
+    //Door testDoor;
 
 };

@@ -5,7 +5,7 @@ LevelScreen::LevelScreen(Game* newGamePointer)
 	: Screen(newGamePointer)
 	, player()
 	, testPlatform()
-	, testDoor()
+	//, testDoor()
 {
 }
 
@@ -18,5 +18,5 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 {
 	player.Draw(target);
 	testPlatform.Draw(target);
-	testDoor.Draw(target);
+	//testDoor.Draw(target);
 }

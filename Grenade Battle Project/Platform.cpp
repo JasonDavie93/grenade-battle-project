@@ -4,5 +4,5 @@
 Platform::Platform()
 	: SpriteObject()
 {
-	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/Platform.png"));
+	sprite.setTexture(AssetManager::RequestTexture("Grenade Battle Assets/tile.png"));
 }

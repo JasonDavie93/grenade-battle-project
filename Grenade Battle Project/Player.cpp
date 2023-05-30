@@ -18,7 +18,7 @@ Player::Player()
 	, velocity(0, 0)
 	, acceleration(0, 0)
 {
-	sprite.setTexture(AssetManager::RequestTexture("Assets/Graphics/PlayerStand.png"));
+	sprite.setTexture(AssetManager::RequestTexture("Grenade Battle Assets/Player_1_Stand.png"));
 	sprite.setPosition(position);
 }
 
