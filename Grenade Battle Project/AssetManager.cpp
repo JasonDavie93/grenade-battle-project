@@ -1,8 +1,6 @@
 #include "AssetManager.h"
 
-std::map<std::string, sf::Texture> AssetManager::textures;
-std::map<std::string, sf::Font> AssetManager::fonts;
-std::map<std::string, sf::SoundBuffer> AssetManager::soundBuffers;
+
 
 // Definitions of static members
 

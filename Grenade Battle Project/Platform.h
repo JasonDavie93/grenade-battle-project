@@ -1,8 +1,19 @@
 #pragma once
-#include "SpriteObject.h"
-class Platform :
-    public SpriteObject
+
+//Default libraries
+#include <SFML/Graphics.hpp>
+
+//Classes
+#include "OnScreenActor.h"
+
+//Forward declarations
+class LevelScreen;
+
+class Platform
+	: public OnScreenActor
 {
 public:
-    Platform();
+	Platform(sf::Vector2f newPosition);
+private:
+	LevelScreen* currentLevel;
 };

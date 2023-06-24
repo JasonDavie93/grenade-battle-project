@@ -1,123 +1,120 @@
-// Default libraries
+//Default libraries
 #include <algorithm>
 
-// Classes
-#include "SpriteObject.h"
-// TODO: Include the VectorHelper
+//Classes
+#include "OnScreenActor.h"
+#include "VectorHelper.h"
 
-SpriteObject::SpriteObject()
-	: sprite()
-	, position(0, 0)
+// Constructor
+OnScreenActor::OnScreenActor()
+	: sprite()  // Initializing member variables
+	, position(0,0)
 	, colliding(false)
 	, collisionOffset(0, 0)
 	, collisionScale(1, 1)
 	, collisionType(CollisionType::AABB)
 	, alive(true)
 {
-	// Constructor implementation
-	// Initialize member variables
+
 }
 
-void SpriteObject::Update(sf::Time frameTime)
+// Update function
+void OnScreenActor::Update(sf::Time frameTime)
 {
-	// TODO: Implement sprite object update logic
-	// Update the sprite object's state based on the frame time
+	// TODO: Implement the logic for updating the actor's state based on frameTime
 }
 
-void SpriteObject::Draw(sf::RenderTarget& target)
+// Draw function
+void OnScreenActor::Draw(sf::RenderTarget& target)
 {
-	// If not alive, skip drawing
 	if (!alive)
 	{
-		return;
+		return; // If the actor is not alive, exit the function
 	}
 
-	// Draw the sprite
-	target.draw(sprite);
+	target.draw(sprite); // Draw the actor's sprite
 
-	bool drawCollider = true;
+	bool drawCollider = true; // Flag indicating whether to draw the collider or not
 
 	if (drawCollider)
 	{
-		// Draw collider based on the collision type
+		// Draw the collider based on its collision type
 		switch (collisionType)
 		{
 		case CollisionType::AABB:
 		{
-			// AABB collision type
+			// Draw an AABB (Axis-Aligned Bounding Box) collider
 			sf::RectangleShape rectangle;
 			sf::FloatRect bounds = GetAABB();
 			rectangle.setPosition(bounds.left, bounds.top);
 			rectangle.setSize(sf::Vector2f(bounds.width, bounds.height));
-
 			sf::Color collisionColour = sf::Color::Green;
 
-			// Turn red if a collision happens
+			// Change color to red if a collision happens
 			if (colliding)
 			{
 				collisionColour = sf::Color::Red;
 			}
+
 			collisionColour.a = 100;
 			rectangle.setFillColor(collisionColour);
-
 			target.draw(rectangle);
 		}
 		break;
-
 		case CollisionType::CIRCLE:
 		{
-			// Circle collision type
+			// Draw a circular collider
 			sf::CircleShape circle;
-
 			sf::Vector2f shapePosition = GetCollisionCentre();
 			float circleRadius = GetCircleColliderRadius();
 			shapePosition.x -= circleRadius;
 			shapePosition.y -= circleRadius;
-
 			circle.setPosition(shapePosition);
 			circle.setRadius(circleRadius);
 			sf::Color collisionColour = sf::Color::Green;
 
-			// Turn red if a collision happens
+			// Change color to red if a collision happens
 			if (colliding)
 			{
 				collisionColour = sf::Color::Red;
 			}
+
 			collisionColour.a = 100;
 			circle.setFillColor(collisionColour);
-
 			target.draw(circle);
 		}
 		break;
-
 		default:
 			break;
 		}
 	}
 }
 
-sf::Vector2f SpriteObject::GetPosition()
+// Get the position of the actor
+sf::Vector2f OnScreenActor::GetPosition()
 {
 	return position;
 }
 
-void SpriteObject::SetPosition(sf::Vector2f newPosition)
+// Set the position of the actor
+void OnScreenActor::SetPosition(sf::Vector2f newPosition)
 {
 	position = newPosition;
 	sprite.setPosition(newPosition);
 }
 
-void SpriteObject::SetPosition(float newX, float newY)
+// Set the position of the actor using separate X and Y coordinates
+void OnScreenActor::SetPosition(float newX, float newY)
 {
 	SetPosition(sf::Vector2f(newX, newY));
 }
 
-bool SpriteObject::CheckCollision(SpriteObject other)
+// Check for collision between this actor and another actor
+bool OnScreenActor::CheckCollision(OnScreenActor other)
 {
-	// If either object is not alive, no collision
 	if (!alive || !other.alive)
 	{
-		return false;
+		return false; // If either actor is not alive, no collision can occur
 	}
 
 	switch (collisionType)
@@ -126,105 +123,97 @@ bool SpriteObject::CheckCollision(SpriteObject other)
 	{
 		if (other.collisionType == CollisionType::AABB)
 		{
-			// AABB vs. AABB collision detection
+			// Check for collision between two AABB colliders
 			return GetAABB().intersects(other.GetAABB());
 		}
 		else
 		{
-			// AABB vs. Circle collision detection
+			// Check for collision between AABB and circular colliders
 
-			// Get the nearest point on the AABB to the circle
 			sf::Vector2f nearestPointToCircle = other.GetCollisionCentre();
 			sf::FloatRect thisAABB = GetAABB();
 
+			// Clamp the nearest point to the boundaries of the AABB
 			nearestPointToCircle.x = std::max(thisAABB.left, std::min(nearestPointToCircle.x, thisAABB.left + thisAABB.width));
 			nearestPointToCircle.y = std::max(thisAABB.top, std::min(nearestPointToCircle.y, thisAABB.top + thisAABB.height));
+
 			sf::Vector2f displacement = nearestPointToCircle - other.GetCollisionCentre();
 
-			// TODO: Calculate square distance using VectorHelper
-			//float squareDistance = VectorHelper::SquareMagnitude(displacement);
-
+			float squareDistance = VectorHelper::SquareMagnitude(displacement);
 			float circleRadius = other.GetCircleColliderRadius();
 
-			// TODO: Return whether square distance is less than or equal to the circle radius squared
-			return /*squareDistance <= circleRadius * circleRadius*/ false;
+			return squareDistance <= circleRadius * circleRadius;
 		}
 	}
 	break;
-
 	case CollisionType::CIRCLE:
 	{
 		if (other.collisionType == CollisionType::CIRCLE)
 		{
-			// Circle vs. Circle collision detection
+			// Check for collision between two circular colliders
 
 			// Get the vector representing the displacement between the two circles
 			sf::Vector2f displacement = GetCollisionCentre() - other.GetCollisionCentre();
 
-			// TODO: Get the square distance using VectorHelper
-			//float squareDistance = VectorHelper::SquareMagnitude(displacement);
+			// Get the magnitude of that vector, which is how far apart the circle centres are
+			float squareDistance = VectorHelper::SquareMagnitude(displacement);
 
-			// Compare the square distance with the combined radii of the two circles
+			// Compare that to the combined radii of the two circles
 			float combinedRadii = GetCircleColliderRadius() + other.GetCircleColliderRadius();
 
-			// TODO: Return whether square distance is less than or equal to the combined radii squared
-			return /*squareDistance <= combinedRadii * combinedRadii*/ false;
+			return squareDistance <= combinedRadii * combinedRadii;
 		}
 		else
 		{
-			// Circle vs. AABB collision detection
+			// Check for collision between circular and AABB colliders
 
 			sf::Vector2f nearestPointToCircle = GetCollisionCentre();
 			sf::FloatRect otherAABB = other.GetAABB();
 
+			// Clamp the nearest point to the boundaries of the other AABB
 			nearestPointToCircle.x = std::max(otherAABB.left, std::min(nearestPointToCircle.x, otherAABB.left + otherAABB.width));
 			nearestPointToCircle.y = std::max(otherAABB.top, std::min(nearestPointToCircle.y, otherAABB.top + otherAABB.height));
 
 			sf::Vector2f displacement = nearestPointToCircle - GetCollisionCentre();
 
-			// TODO: Calculate square distance using VectorHelper
-			//float squareDistance = VectorHelper::SquareMagnitude(displacement);
-
+			float squareDistance = VectorHelper::SquareMagnitude(displacement);
 			float circleRadius = GetCircleColliderRadius();
 
-			// TODO: Return whether square distance is less than or equal to the circle radius squared
-			return /*squareDistance <= circleRadius * circleRadius*/ false;
+			return squareDistance <= circleRadius * circleRadius;
 		}
 	}
 	break;
-
 	default:
 	{
-		// Default collision detection using AABB
-		return GetAABB().intersects(other.GetAABB());
+		return GetAABB().intersects(other.GetAABB()); // Default to AABB intersection if collision types are unknown
 	}
 	break;
 	}
 }
 
-void SpriteObject::SetColliding(bool newColliding)
+// Set the colliding flag of the actor
+void OnScreenActor::SetColliding(bool newColliding)
 {
 	colliding = newColliding;
 }
 
-sf::Vector2f SpriteObject::CalculateCollisionDepth(SpriteObject other)
+// Calculate the depth of collision between this actor and another actor
+sf::Vector2f OnScreenActor::CalculateCollisionDepth(OnScreenActor other)
 {
 	sf::FloatRect thisAABB = GetAABB();
 	sf::FloatRect otherAABB = other.GetAABB();
-
 	sf::Vector2f thisCentre = GetCollisionCentre();
 	sf::Vector2f otherCentre = other.GetCollisionCentre();
-
 	sf::Vector2f minDistance;
 	minDistance.x = thisAABB.width * 0.5f + otherAABB.width * 0.5f;
 	minDistance.y = thisAABB.height * 0.5f + otherAABB.height * 0.5f;
-
 	sf::Vector2f actualDistance = otherCentre - thisCentre;
 
 	if (actualDistance.x < 0)
 	{
 		minDistance.x = -minDistance.x;
 	}
+
 	if (actualDistance.y < 0)
 	{
 		minDistance.y = -minDistance.y;
@@ -233,34 +222,34 @@ sf::Vector2f SpriteObject::CalculateCollisionDepth(SpriteObject other)
 	return actualDistance - minDistance;
 }
 
-void SpriteObject::HandleCollision(SpriteObject& other)
+// Handle collision with another actor
+void OnScreenActor::HandleCollision(OnScreenActor& other)
 {
-	// Do nothing, to be implemented in child classes
+	// Do nothing in the base class, should be implemented in child classes
 }
 
-void SpriteObject::SetAlive(bool newAlive)
+// Set the alive flag of the actor
+void OnScreenActor::SetAlive(bool newAlive)
 {
 	alive = newAlive;
 }
 
-sf::Vector2f SpriteObject::GetCollisionCentre()
+// Get the center point of the actor's collider
+sf::Vector2f OnScreenActor::GetCollisionCentre()
 {
 	sf::Vector2f centre = position;
-
 	sf::FloatRect bounds = sprite.getGlobalBounds();
 	centre.x += bounds.width * 0.5f;
 	centre.y += bounds.height * 0.5f;
-
 	centre.x += collisionOffset.x;
 	centre.y += collisionOffset.y;
-
 	return centre;
 }
 
-float SpriteObject::GetCircleColliderRadius()
+// Get the radius of the circular collider
+float OnScreenActor::GetCircleColliderRadius()
 {
 	sf::FloatRect bounds = sprite.getGlobalBounds();
-
 	bounds.width = bounds.width * collisionScale.x;
 	bounds.height = bounds.height * collisionScale.y;
 
@@ -274,16 +263,14 @@ float SpriteObject::GetCircleColliderRadius()
 	}
 }
 
-sf::FloatRect SpriteObject::GetAABB()
+// Get the AABB (Axis-Aligned Bounding Box) of the actor's collider
+sf::FloatRect OnScreenActor::GetAABB()
 {
 	sf::FloatRect bounds = sprite.getGlobalBounds();
 	bounds.width = bounds.width * collisionScale.x;
 	bounds.height = bounds.height * collisionScale.y;
-
 	sf::Vector2f centre = GetCollisionCentre();
-
 	bounds.left = centre.x - bounds.width * 0.5f;
 	bounds.top = centre.y - bounds.height * 0.5f;
-
 	return bounds;
 }

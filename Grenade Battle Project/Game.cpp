@@ -2,17 +2,6 @@
 #include "Screen.h"
 #include "LevelScreen.h"
 
-Game::Game()
-	: window(sf::VideoMode::getDesktopMode(), "Grenade Battle", sf::Style::Titlebar | sf::Style::Close)
-	, gameClock()
-	, currentScreen(nullptr)
-{
-	// Window setup
-	window.setMouseCursorVisible(false);
-
-	// TODO: Setup screens
-	//currentScreen = new LevelScreen(this);
-}
 
 // Constructor:
 // - Initializes the Game object with member variables

@@ -1,49 +1,45 @@
 #pragma once
-//Default libraries
+
+// Default libraries
 #include <iostream>
 
-//Classes
-#include "SpriteObject.h"
+// Classes
+#include "OnScreenActor.h"
 
-//class Grenade;
-//class LevelScreen
+// Forward declarations
+// class Grenade;
 
-class Player :
-    public SpriteObject
+class LevelScreen;
+
+class Player : public OnScreenActor
 {
-     
+public:
+    Player();
+    void Update(sf::Time frameTime) override;
+    void HandleCollision(OnScreenActor& other) override;
 
-    void HandleCollision(SpriteObject& other) override;
-
-    void GetCurrentLevel(/*LevelScreen* newPlayerLevel*/);
-
-    void PlayerMovement();
-    void PlayerAutoJump();
-    void PlayerDeath();
-    void SetGrounded(bool newIsGrounded);
+    void SetPlayerID(std::string newPlayerIDstr);
+    void SetPlayerID(int newPlayerIDint);
 
 private:
+    void PlayerMovement();
 
-    void UpdateAcceleration();
-    void AimGrenade(sf::Vector2f newAimTarget);
-    void FireGrenade(sf::Vector2f newAimTarget);
+    // void AimGrenade(sf::Vector2f newAimTarget);
+    // void FireGrenade(sf::Vector2f newAimTarget);
 
-
-    sf::Vector2f twoFramesOldPos;
-    sf::Vector2f velocity;
-    sf::Vector2f acceleration;
-
-    sf::Sprite playerSprite;
-    sf::Sound playerJumpSound;
-    sf::Sound playerDeathSound;
-    std::string playerIDstr;
-    int playerIDint;
-    //LevelScreen* playerLevel;
-    bool isGrounded;
-    bool isAlive;
-    sf::Vector2f hitboxOffset;
-    sf::Vector2f hitboxScale;
-    sf::Vector2f aimTarget;
-    //Grenade* playerGrenade;
-
+    sf::Vector2f twoFramesOldPos;    // Position from two frames ago
+    sf::Vector2f velocity;           // Velocity of the player
+    sf::Vector2f acceleration;       // Acceleration of the player
+    sf::Sprite playerSprite;         // Sprite representing the player
+    sf::Sound playerJumpSound;       // Sound for player's jump
+    sf::Sound playerDeathSound;      // Sound for player's death
+    std::string playerIDstr;         // String representing the player's ID
+    int playerIDint;                 // Integer representing the player's ID
+    LevelScreen* playerLevel;        // Pointer to the level screen the player belongs to
+    bool isGrounded;                 // Flag indicating if the player is grounded
+    bool isAlive;                    // Flag indicating if the player is alive
+    sf::Vector2f hitboxOffset;       // Offset of the player's hitbox
+    sf::Vector2f hitboxScale;        // Scale of the player's hitbox
+    sf::Vector2f aimTarget;          // Target for aiming
+    // Grenade* playerGrenade;      // Pointer to the player's grenade
 };
