@@ -1,13 +1,14 @@
 #pragma once
+// Default Libraries
 #include <SFML/Graphics.hpp>
+#include "LevelScreen.h"
 
+// Forward declarations
 class Screen;
 
 class Game
 {
-
 public:
-
 	Game();
 
 	void RunGameLoop();
@@ -16,12 +17,11 @@ public:
 	void Update();
 	void Draw();
 
+	sf::RenderWindow* GetWindow();
 
 private:
+	sf::RenderWindow window; // The game window
+	sf::Clock gameClock; // Clock for measuring time
 
-	sf::RenderWindow window;
-	sf::Clock gameClock;
-
-	Screen* currentScreen;
-
+	Screen* currentScreen; // Pointer to the current screen
 };

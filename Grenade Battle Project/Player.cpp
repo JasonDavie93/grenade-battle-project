@@ -1,136 +1,102 @@
+//Classes
 #include "Player.h"
 #include "AssetManager.h"
 
-
-enum class PhysicsType {
-	FORWARD_EULER,
-	BACKWARD_EULER,
-	SYMPLECTIC_EULER,
-	POSITION_VERLET,
-	VELOCITY_VERLET
+//Practical Task - Physics Alternatives
+enum class PhysicsType
+{
+	BACKWARD_EULER
+	, POSITION_VERLET
+	BACKWARDS_EULER //Implicit Euler
+	, SYMPLECTIC_EULER //Semi-Implicit Euler
 };
-
-
 Player::Player()
 	: SpriteObject()
-	, position(100, 300)
-	, twoFramesOldPos(100, 300)
-	, velocity(0, 0)
-	, acceleration(0, 0)
-{
-	sprite.setTexture(AssetManager::RequestTexture("Grenade Battle Assets/Player_1_Stand.png"));
-	sprite.setPosition(position);
-}
+	
 
-void Player::Update(sf::Time frameTime)
+	void Player::Update(sf::Time frameTime)
 {
-	const float DRAG_MULT = 0.99f;
-	const PhysicsType physics = PhysicsType::FORWARD_EULER;
+	const float DRAG_MULT = 10.0f;
+	const PhysicsType physics = PhysicsType::BACKWARDS_EULER;
 
 	switch (physics)
 	{
-	case PhysicsType::FORWARD_EULER:
+	case PhysicsType::BACKWARDS_EULER:
 	{
-		// EXPLICIT EULER (FORWARD EULER)
+		//IMPLICIT EULER (BACKWARD EULER)
 
-		position = position + velocity * frameTime.asSeconds();
-		velocity = velocity + acceleration * frameTime.asSeconds();
+		//Update acceleration
+		PlayerMovement();
 
-		// drag
-		velocity = velocity * DRAG_MULT;
+		velocity += acceleration * frameTime.asSeconds();
 
-		// Update acceleration
-		UpdateAcceleration();
-	}
-	break;
 
-	case PhysicsType::BACKWARD_EULER:
-	{
-		// IMPLICIT / BACKWARD EULER
+		//drag
+		velocity.x = velocity.x - velocity.x * DRAG_MULT * frameTime.asSeconds();
 
-		// Update acceleration
-		UpdateAcceleration();
+		SetPosition(GetPosition() + velocity * frameTime.asSeconds());
 
-		velocity = velocity + acceleration * frameTime.asSeconds();
-
-		// drag
-		velocity = velocity * DRAG_MULT;
-
-		position = position + velocity * frameTime.asSeconds();
 
 	}
 	break;
 
 	case PhysicsType::SYMPLECTIC_EULER:
 	{
-		// SEMI-IMPLICIT / SYMPLECTIC_EULER
+		//SEMI-IMPLICIT EULER (SYMPLECTIC EULER)
+		velocity += acceleration * frameTime.asSeconds();
 
-		velocity = velocity + acceleration * frameTime.asSeconds();
+		//drag
+		velocity.x = velocity.x - velocity.x * DRAG_MULT * frameTime.asSeconds();
 
-		// drag
-		velocity = velocity * DRAG_MULT;
+		SetPosition(GetPosition() + velocity * frameTime.asSeconds());
 
-		position = position + velocity * frameTime.asSeconds();
-
-		// Update acceleration
-		UpdateAcceleration();
+		//Update acceleration
+		PlayerMovement();
 	}
 	break;
+	}
+}
 
-	case PhysicsType::POSITION_VERLET:
+void Player::HandleCollision(SpriteObject& other)
+{
+	sf::Vector2f depth = CalculateCollisionDepth(other);
+	sf::Vector2f newPosition = GetPosition();
+	const float JUMPSPEED = 1000;
+
+	if (abs(depth.x) < abs(depth.y))
 	{
-		// Update acceleration
-		UpdateAcceleration();
-
-		sf::Vector2f lastFramePos = position;
-
-		// Calculate current fram's position
-		position = 2.0f * lastFramePos - twoFramesOldPos + acceleration * frameTime.asSeconds() * frameTime.asSeconds();
-
-		// Two frames ago (for next frame)
-		twoFramesOldPos = lastFramePos;
+		//Move in x direction
+		newPosition.x += depth.x;
+		velocity.x = 0;
+		acceleration.x = 0;
 	}
-	break;
-
-	case PhysicsType::VELOCITY_VERLET:
+	else
 	{
-		// VELOCITY VERLET / LEAP FROG
+		//Move in y direction
+		newPosition.y += depth.y;
+		velocity.y = 0;
+		acceleration.y = 0;
 
-		// Get half frame velocity using
-		// previous frame's acceleration
-		sf::Vector2f halfFrameVelocity = velocity + acceleration * frameTime.asSeconds() / 2.0f;
-
-		// Get new frame's position using half frame velocity
-		position = position + halfFrameVelocity * frameTime.asSeconds();
-
-		// Update our current acceleration
-		UpdateAcceleration();
-
-		// Get new frame's velocity using half frame velocity and
-		// updated acceleration
-		velocity = halfFrameVelocity + acceleration * frameTime.asSeconds() / 2.0f;
-
-		// drag
-		velocity = velocity * DRAG_MULT;
-	}
-	break;
-
-	default:
-		break;
+		//Collision from above
+		if (depth.y < 0)
+		{
+			velocity.y = -JUMPSPEED;
+		}
 	}
 
-
-	// Update the visual position to match the physics simulation
-	sprite.setPosition(position);
+	SetPosition(newPosition);
 }
 
 void Player::UpdateAcceleration()
+void Player::PlayerMovement()
 {
-	const float ACCEL = 50000;
+	const float ACCEL = 5000;
+	const float GRAVITY = 1000;
 
-	// Update acceleration
+
 	acceleration.x = 0;
-	acceleration.y = 0;
+	acceleration.y = GRAVITY;
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
 		acceleration.x = -ACCEL;
@@ -138,16 +104,6 @@ void Player::UpdateAcceleration()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
 		acceleration.x = ACCEL;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-	{
-		acceleration.y = -ACCEL;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-	{
-		acceleration.y = ACCEL;
+
 	}
 }
-
-
-
