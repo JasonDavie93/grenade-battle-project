@@ -32,6 +32,8 @@ void OnScreenActor::Draw(sf::RenderTarget& target)
 		return; // If the actor is not alive, exit the function
 	}
 
+	//Practical Task - Collision Geometry
+
 	target.draw(sprite); // Draw the actor's sprite
 
 	bool drawCollider = true; // Flag indicating whether to draw the collider or not
@@ -116,6 +118,8 @@ bool OnScreenActor::CheckCollision(OnScreenActor other)
 	{
 		return false; // If either actor is not alive, no collision can occur
 	}
+
+	//Practicle Task - Collision Geometry
 
 	switch (collisionType)
 	{

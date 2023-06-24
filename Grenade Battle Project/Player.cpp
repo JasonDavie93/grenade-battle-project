@@ -27,7 +27,7 @@ Player::Player()
     , aimTarget()
     //, playerGrenade()
 {
-    sprite.setTexture(AssetManager::RequestTexture("LukuSlimeBaseDesign-1.png")); // Placeholder Player Texture
+ 
     sprite.setTexture(AssetManager::RequestTexture("player_" + playerIDstr + "_stand")); // Sets the player's sprite texture
 
     collisionType = CollisionType::CIRCLE; // Sets the collision type to circle

@@ -3,8 +3,10 @@
 #include "Screen.h"
 #include "Player.h"
 #include "Platform.h"
+#include "OnScreenActor.h"
 // Default Libraries
 #include <SFML/Graphics.hpp>
+#include <iostream>
 //#include "Door.h"
 
 // Forward declarations
