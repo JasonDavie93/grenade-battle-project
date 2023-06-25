@@ -208,10 +208,6 @@ sf::Vector2f Player::GetPipPosition(float pipTime)
 	//Practical Task - Gravity Prediction
 	sf::Vector2f pipPosition;
 
-	//pipPosition = sf::Vector2f(0.0f, 1000.0f) * pipTime * pipTime
-	//	+ sf::Vector2f(500.0f, -1000.0f) * pipTime
-	//	+ sf::Vector2f(500.0f, 500.0f);
-
 	pipPosition = sf::Vector2f(0.0f, gravity / 2.0f) * pipTime * pipTime
 		+ fireVelocity * pipTime
 		+ GetPosition();

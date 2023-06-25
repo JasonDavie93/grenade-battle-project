@@ -15,7 +15,7 @@ EndingScreen::EndingScreen(sf::RenderWindow* newWindow)
 {
     // Initializing member variables and setting up the background texture
 
-    background.setTexture(AssetManager::RequestTexture("panel_blue"));
+    background.setTexture(AssetManager::RequestTexture("endScreen"));
     background.setScale(6.0f, 6.0f);
 
     // Set up the title font and character size based on the winner
@@ -61,7 +61,7 @@ void EndingScreen::Update(sf::Time frameTime)
 
 void EndingScreen::Draw(sf::RenderTarget& target)
 {
-    // Draw the EndPanel components onto the target
+    // Draw the EndingScreen components onto the target
 
     OnScreenActor::Draw(target);  // Assuming there's an implementation in the base class
     target.draw(background);
@@ -71,7 +71,7 @@ void EndingScreen::Draw(sf::RenderTarget& target)
 
 void EndingScreen::SetPosition(sf::Vector2f newPosition)
 {
-    // Set the position of the EndPanel and adjust the positions of the title and message
+    // Set the position of the EndingScreen and adjust the positions of the title and message
 
     background.setPosition(newPosition);
 
@@ -96,7 +96,7 @@ void EndingScreen::StartAnimation()
 
 void EndingScreen::ResetPosition()
 {
-    // Reset the position of the EndPanel to the initial position
+    // Reset the position of the EndScreen to the initial position
 
     float xPos = window->getSize().x * 0.5f - background.getGlobalBounds().width * 0.5f;
     float yPos = window->getSize().y;

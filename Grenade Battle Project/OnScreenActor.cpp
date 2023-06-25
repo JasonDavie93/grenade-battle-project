@@ -116,9 +116,9 @@ bool OnScreenActor::CheckCollision(OnScreenActor other)
 {
 	if (!alive || !other.alive)
 	{
-		return false; // If either actor is not alive, no collision can occur
+		
 	}
-
+	return GetAABB().intersects(other.GetAABB());
 	//Practicle Task - Collision Geometry
 
 	switch (collisionType)

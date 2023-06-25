@@ -158,11 +158,7 @@ void LevelScreen::Update(sf::Time frameTime)
 	{
 		endScreen.Update(frameTime);
 
-		// Restart the game if the 'R' key is pressed
-		//if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
-		//{
-		//    Restart();
-		//}
+		
 	}
 	if (!grenadeAlive)
 	{

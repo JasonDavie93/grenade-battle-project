@@ -10,9 +10,9 @@ enum class PhysicsType
 };
 
     Grenade::Grenade(sf::Vector2f newPosition, sf::Vector2f newFireVelocity, int owner)
-        : PhysicsObject(),
-        owner(owner),
-        isAlive(true)
+        : PhysicsObject()
+       , owner(owner)
+        , isAlive(true)
     {
         // Set the texture of the grenade sprite
         sprite.setTexture(AssetManager::RequestTexture("grenade"));

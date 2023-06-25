@@ -9,6 +9,7 @@
 		, gameClock() // Initialize the game clock
 		, currentScreen(nullptr) // Set the current screen to null pointer initially
 	{
+
 		window.setMouseCursorVisible(false); // Hide the mouse cursor
 		currentScreen = new LevelScreen(this); // Create a new LevelScreen and assign it as the current screen
 	}

@@ -1,9 +1,5 @@
 #include "AssetManager.h"
-
-
-
 // Definitions of static members
-
 // Initialize the static maps for storing assets
 std::map<std::string, sf::Texture> AssetManager::textures;
 std::map<std::string, sf::Font> AssetManager::fonts;
@@ -22,7 +18,6 @@ sf::Texture& AssetManager::RequestTexture(std::string textureName)
     }
     else
     {
-        system("dir");
         sf::Texture& newTexture = textures[textureName]; // Create a new entry in the textures map with the texture name as the key
         newTexture.loadFromFile("Assets/" + textureName + ".png"); // Load the texture from the specified file
         return newTexture; // Return the newly loaded texture

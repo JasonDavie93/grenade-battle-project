@@ -24,22 +24,17 @@ public:
 
 	// Public Getters
 	sf::Vector2f GetPosition();                                    // Get the position of the actor
-
-	// Public Setters
+	// Public Setter
 	virtual void SetPosition(sf::Vector2f newPosition);            // Set the position of the actor
 	void SetPosition(float newX, float newY);                      // Set the position of the actor using individual coordinates
-
 	bool CheckCollision(OnScreenActor other);                       // Check collision with another actor
 	void SetColliding(bool newColliding);                           // Set the colliding flag for the actor
-
 	sf::Vector2f CalculateCollisionDepth(OnScreenActor other);      // Calculate the depth of collision with another actor
-
 	virtual void HandleCollision(OnScreenActor& other);             // Handle the collision with another actor
-	sf::FloatRect GetAABB(); // Get the AABB (Axis-Aligned Bounding Box) of the collider
 	void SetAlive(bool newAlive);                                   // Set the alive flag for the actor
-
+	sf::FloatRect GetAABB();
 protected:
-	sf::Sprite sprite; // Sprite representing the actor
+	sf::Sprite sprite;												// Sprite representing the actor
 	sf::Vector2f collisionOffset;                                   // Offset of the collider from the position
 	sf::Vector2f collisionScale;                                    // Scale of the collider
 	CollisionType collisionType;                                    // Type of the collider (circle or AABB)

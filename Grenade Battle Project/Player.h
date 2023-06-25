@@ -36,9 +36,6 @@ private:
 
 	void FireGrenade();
 
-	//void AimGrenade(sf::Vector2f newAimTarget);
-	//void FireGrenade(sf::Vector2f newAimTarget);
-
 	sf::Vector2f twoFramesOldPos;
 	sf::Sprite playerSprite;
 	sf::Sound playerJumpSound;
