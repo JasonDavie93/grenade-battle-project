@@ -33,7 +33,6 @@ void PhysicsObject::Update(sf::Time frameTime)
 	case PhysicsType::BACKWARDS_EULER:
 	{
 		// Implicit Euler (Backward Euler) - used for accuracy
-
 		// Update the velocity based on the acceleration and frame time.
 		velocity += acceleration * frameTime.asSeconds();
 

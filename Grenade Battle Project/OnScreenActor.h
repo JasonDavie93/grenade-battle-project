@@ -5,8 +5,9 @@
 #include<SFML/Audio.hpp>
 
 
-
+//Practical Task - Collision Geometry
 enum class CollisionType
+
 {
 	CIRCLE, // Collision type for a circle collider
 	AABB // Collision type for an AABB (Axis-Aligned Bounding Box) collider
@@ -34,7 +35,7 @@ public:
 	sf::Vector2f CalculateCollisionDepth(OnScreenActor other);      // Calculate the depth of collision with another actor
 
 	virtual void HandleCollision(OnScreenActor& other);             // Handle the collision with another actor
-
+	sf::FloatRect GetAABB(); // Get the AABB (Axis-Aligned Bounding Box) of the collider
 	void SetAlive(bool newAlive);                                   // Set the alive flag for the actor
 
 protected:
@@ -51,16 +52,11 @@ private:
 	// Private Getters
 	sf::Vector2f GetCollisionCentre(); // Get the center point of the collider
 	float GetCircleColliderRadius(); // Get the radius of the circle collider
-	sf::FloatRect GetAABB(); // Get the AABB (Axis-Aligned Bounding Box) of the collider
+	
 	//data
 	bool colliding;
 };
 
-// This class represents an on-screen actor with collision capabilities. It provides functions for updating, drawing,
-// checking collision with other actors, and handling collisions. It also includes functions for getting and setting
-// the position, as well as the alive flag. The actor can have either a circle collider or an AABB collider,
-// which is determined by the collisionType enum. The collisionOffset and collisionScale determine the position and
-// scale of the collider relative to the actor's position and sprite.
 
 
 
