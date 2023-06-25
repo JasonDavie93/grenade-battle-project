@@ -1,5 +1,5 @@
 #include "PhysicsObject.h"
-#include "PhysicsObject.h"
+
 
 // Practical Task - Physics Alternatives
 enum class PhysicsType
@@ -54,7 +54,7 @@ void PhysicsObject::Update(sf::Time frameTime)
 			}
 		}
 
-		SetAccelaration();  // Set the acceleration of the object.
+		SetAcceleration();  // Set the acceleration of the object.
 		SetPosition(GetPosition() + velocity * frameTime.asSeconds());  // Update the position based on the velocity.
 	}
 	break;
@@ -83,7 +83,7 @@ void PhysicsObject::Update(sf::Time frameTime)
 			}
 		}
 
-		SetAccelaration();  // Set the acceleration of the object.
+		SetAcceleration();  // Set the acceleration of the object.
 
 	}
 	break;
@@ -94,7 +94,7 @@ void PhysicsObject::SetVelocity(sf::Vector2f newVelocity)
 	// Set the velocity of the object.
 	velocity = newVelocity;
 }
-void PhysicsObject::SetAccelaration()
+void PhysicsObject::SetAcceleration()
 {
 	// Set the acceleration of the object.
 	acceleration.x = 0;

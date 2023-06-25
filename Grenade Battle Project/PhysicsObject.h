@@ -16,7 +16,7 @@ public:
 	virtual void SetVelocity(sf::Vector2f newVelocity);
 
 	// Function to set the acceleration of the physics object
-	virtual void SetAccelaration(); // Note: Typo in function name, should be SetAcceleration
+	virtual void SetAcceleration(); // Note: Typo in function name, should be SetAcceleration
 protected:
 	float gravity; // Variable to store the gravity value
 	sf::Vector2f velocity; // Variable to store the velocity of the physics object

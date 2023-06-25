@@ -1,11 +1,8 @@
 #pragma once
-
 //Default libraries
 #include <SFML/Graphics.hpp>
-
 //Classes
 #include "OnScreenActor.h"
-
 //Forward declarations
 class LevelScreen;
 

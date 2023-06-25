@@ -17,12 +17,14 @@ sf::Texture& AssetManager::RequestTexture(std::string textureName)
     if (pairFound != textures.end())
     {
         // We found an existing texture! Use it
+       
         return pairFound->second; // Return the texture (value) associated with the texture name (key)
     }
     else
     {
+        system("dir");
         sf::Texture& newTexture = textures[textureName]; // Create a new entry in the textures map with the texture name as the key
-        newTexture.loadFromFile("Assets/Graphics/" + textureName + ".png"); // Load the texture from the specified file
+        newTexture.loadFromFile("Assets/" + textureName + ".png"); // Load the texture from the specified file
         return newTexture; // Return the newly loaded texture
     }
 }
@@ -40,7 +42,7 @@ sf::Font& AssetManager::RequestFont(std::string fontName)
     else
     {
         sf::Font& newFont = fonts[fontName]; // Create a new entry in the fonts map with the font name as the key
-        newFont.loadFromFile("Assets/Fonts/" + fontName + ".tff"); // Load the font from the specified file
+        newFont.loadFromFile("Assets/" + fontName + ".tff"); // Load the font from the specified file
         return newFont; // Return the newly loaded font
     }
 }
@@ -58,7 +60,7 @@ sf::SoundBuffer& AssetManager::RequestSoundBuffer(std::string bufferName)
     else
     {
         sf::SoundBuffer& newSoundBuffer = soundBuffers[bufferName]; // Create a new entry in the soundBuffers map with the buffer name as the key
-        newSoundBuffer.loadFromFile("Assets/Audio/" + bufferName + ".png"); // Load the sound buffer from the specified file
+        newSoundBuffer.loadFromFile("Assets/" + bufferName + ".png"); // Load the sound buffer from the specified file
         return newSoundBuffer; // Return the newly loaded sound buffer
     }
 }

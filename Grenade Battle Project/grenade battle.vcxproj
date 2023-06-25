@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="EaseOutFunction.cpp" />
+    <ClCompile Include="EndingScreen.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Grenade.cpp" />
     <ClCompile Include="LevelScreen.cpp" />
@@ -156,12 +157,12 @@
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Screen.cpp" />
-    <ClCompile Include="TitleScreen.cpp" />
     <ClCompile Include="VectorHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="EaseOutFunction.h" />
+    <ClInclude Include="EndingScreen.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Grenade.h" />
     <ClInclude Include="LevelScreen.h" />
@@ -170,7 +171,6 @@
     <ClInclude Include="Platform.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Screen.h" />
-    <ClInclude Include="TitleScreen.h" />
     <ClInclude Include="VectorHelper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

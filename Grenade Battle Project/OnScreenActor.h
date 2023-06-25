@@ -42,11 +42,8 @@ protected:
 	sf::Sprite sprite; // Sprite representing the actor
 	sf::Vector2f collisionOffset;                                   // Offset of the collider from the position
 	sf::Vector2f collisionScale;                                    // Scale of the collider
-
 	CollisionType collisionType;                                    // Type of the collider (circle or AABB)
-
 	sf::Vector2f position;
-
 	bool alive;                                                     // Flag indicating if the actor is alive
 private:
 	// Private Getters

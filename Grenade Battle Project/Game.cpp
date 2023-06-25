@@ -1,83 +1,69 @@
+//Classes
 #include "Game.h"
 #include "Screen.h"
 #include "LevelScreen.h"
 
-
-// Constructor:
-// - Initializes the Game object with member variables
-// - Sets up the window with the specified size, title, and window style
-// - Sets the game clock
-// - Initializes the current screen pointer to nullptr
-Game::Game()
-	: window(sf::VideoMode::getDesktopMode(), "Grenade Battle", sf::Style::Titlebar | sf::Style::Close)
-	, gameClock()
-	, currentScreen(nullptr)
-{
-	// Window setup
-	window.setMouseCursorVisible(false);
-
-	// TODO: Setup screens
-	//currentScreen = new LevelScreen(this);
-}
-
-// The main game loop that runs as long as the window is open
-void Game::RunGameLoop()
-{
-	while (window.isOpen())
+	Game::Game()
+		//Initiallizer list
+		: window(sf::VideoMode::getDesktopMode(), "Grenade Battle", sf::Style::Titlebar | sf::Style::Close) // Create the game window with specified properties
+		, gameClock() // Initialize the game clock
+		, currentScreen(nullptr) // Set the current screen to null pointer initially
 	{
-		Update();
-		Draw();
-		EventHandling();
+		window.setMouseCursorVisible(false); // Hide the mouse cursor
+		currentScreen = new LevelScreen(this); // Create a new LevelScreen and assign it as the current screen
 	}
-}
 
-// Handles events such as window close and key press
-void Game::EventHandling()
-{
-	sf::Event event;
-	while (window.pollEvent(event))
+	void Game::RunGameLoop()
 	{
-		if (event.type == sf::Event::Closed)
-			window.close();
-
-		// Close the game if escape is pressed
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+		//Repeat as long as the window is open
+		while (window.isOpen())
 		{
-			window.close();
+			Update(); // Update the game logic
+			Draw(); // Draw the game elements on the screen
+			EventHandling(); // Handle user input events
 		}
 	}
-}
+	void Game::EventHandling()
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window.close(); // Close the game if the window is closed
 
-// Updates the game state
-void Game::Update()
-{
-	sf::Time frameTime = gameClock.restart();
+			
+				//Close the game if esc is pressed
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+				{
+					window.close();  // Close the game if the Escape key is pressed
+				}
+		}
+	}
 
-	// Update current screen
-	//if (currentScreen != nullptr)
-	//{
-	//	currentScreen->Update(frameTime);
-	//}
+	void Game::Update()
+	{
+		sf::Time frameTime = gameClock.restart(); // Get the elapsed time since the last frame
+		//Update current screen
+		if (currentScreen != nullptr)
+		{
+			currentScreen->Update(frameTime);  // Update the current screen with the elapsed frame time
+		}
 
-	// TODO: Handle changes to other screens
-}
+		//TODO: Handle changes to other screens
+	}
+	void Game::Draw()
+	{
+		window.clear(); // Clear the window
+		//Draw current screen
+		if (currentScreen != nullptr)
+		{
+			currentScreen->Draw(window);  // Draw the current screen on the window
+		}
 
-// Draws the game screen
-void Game::Draw()
-{
-	window.clear();
+		window.display();  // Display the window contents
 
-	// Draw current screen
-	//if (currentScreen != nullptr)
-	//{
-	//	currentScreen->Draw(window);
-	//}
-
-	window.display();
-}
-
-// Returns a pointer to the game window
-sf::RenderWindow* Game::GetWindow()
-{
-	return &window;
-}
+	}
+	sf::RenderWindow* Game::GetWindow()
+	{
+		return &window; // Return a pointer to the game window
+	}

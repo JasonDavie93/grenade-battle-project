@@ -1,184 +1,249 @@
 //Classes
 #include "Player.h"
 #include "AssetManager.h"
+#include "LevelScreen.h"
+#include "Screen.h"
+#include "Grenade.h"
 
-// Practical Task - Physics Alternatives
-enum class PhysicsType
+Player::Player(std::string newPlayerIDstr, int newPlayerIDint, LevelScreen* newCurrentLevel)
+	: PhysicsObject()
+	, twoFramesOldPos(100, 300)
+	, playerSprite()
+	, playerJumpSound()
+	, playerDeathSound()
+	, playerIDstr(newPlayerIDstr)
+	, playerIDint(newPlayerIDint)
+	, playerLevel(newCurrentLevel)
+	, isGrounded(true)
+	, isAlive(true)
+	, aimTarget(0, 0)
+	, pips()
+	, playerGrenade(nullptr)
+	, fireVelocity()
+	, fireCooldown(sf::seconds(2.5f))
+	, fireTimer()
+	, playerLives(3)
+	, player1Lives(3)
+	, player2Lives(3)
 {
-    BACKWARDS_EULER,     // Implicit Euler
-    SYMPLECTIC_EULER     // Semi-Implicit Euler
-};
+	sprite.setTexture(AssetManager::RequestTexture("player_" + playerIDstr + "_stand"));
 
-// Player class implementation
-Player::Player(std::string newPlayerIDstr, int newPlayerIDint)
-    : OnScreenActor(),
-    twoFramesOldPos(100, 300),
-    velocity(0, 0),
-    acceleration(0, 0),
-    playerSprite(),
-    playerJumpSound(),
-    playerDeathSound(),
-    playerIDstr(newPlayerIDstr),
-    playerIDint(newPlayerIDint),
-    playerLevel(),
-    isGrounded(true),
-    isAlive(true),
-    hitboxOffset(0, 0),
-    hitboxScale(1, 1),
-    aimTarget(0, 0),
-    pips()
-{
-    // Set the texture of the player sprite
-    sprite.setTexture(AssetManager::RequestTexture("player_" + playerIDstr + "_stand"));
+	collisionType = CollisionType::CIRCLE;
 
-    collisionType = CollisionType::CIRCLE;
-    collisionOffset = sf::Vector2f(0.0f, 0.0f);
-    collisionScale = sf::Vector2f(1.0f, 1.0f);
+	collisionOffset = sf::Vector2f(0.0f, 0.0f);
+	collisionScale = sf::Vector2f(1.0f, 1.0f);
 
-    // Add sprites to pips
-    const int NUM_PIPS = 5;
+	//Add sprites to pips
+	const int NUM_PIPS = 5;
 
-    for (int i = 0; i < NUM_PIPS; ++i)
-    {
-        pips.push_back(sf::Sprite());
-        pips[i].setTexture(AssetManager::RequestTexture("pip"));
-    }
+	for (int i = 0; i < NUM_PIPS; ++i)
+	{
+		pips.push_back(sf::Sprite());
+		pips[i].setTexture(AssetManager::RequestTexture("pip"));
+	}
 }
 
 void Player::Update(sf::Time frameTime)
 {
-    // Practical Task - Gravity Prediction
-    OnScreenActor::Update(frameTime);
+	//Practical Task - Gravity Prediction
+	PhysicsObject::Update(frameTime);
 
-    float pipTime = 0;
-    float pipTimeStep = 0.1f;
+	SetPosition(GetPosition() + velocity * frameTime.asSeconds());
 
-    for (int i = 0; i < pips.size(); ++i)
-    {
-        pips[i].setPosition(GetPipPosition(pipTime));
-        pipTime += pipTimeStep;
-    }
+	float pipTime = 0.0f;
+	float pipTimeStep = 0.1f;
 
-    // Practical Task - Physics Alternatives
-    const float DRAG_MULT = 10.0f;
-    const PhysicsType physics = PhysicsType::BACKWARDS_EULER;
-    switch (physics)
-    {
-    case PhysicsType::BACKWARDS_EULER:
-    {
-        // IMPLICIT EULER (BACKWARD EULER) - used for accuracy
-        // Update acceleration
-        PlayerMovement();
-        velocity += acceleration * frameTime.asSeconds();
-        // drag
-        velocity.x = velocity.x - velocity.x * DRAG_MULT * frameTime.asSeconds();
-        SetPosition(GetPosition() + velocity * frameTime.asSeconds());
-    }
-    break;
-    case PhysicsType::SYMPLECTIC_EULER:
-    {
-        // SEMI-IMPLICIT EULER (SYMPLECTIC EULER) - Used for ease of implementation
-        velocity += acceleration * frameTime.asSeconds();
-        // drag
-        velocity.x = velocity.x - velocity.x * DRAG_MULT * frameTime.asSeconds();
-        SetPosition(GetPosition() + velocity * frameTime.asSeconds());
-        // Move the player
-        PlayerMovement();
-    }
-    break;
-    }
+	for (int i = 0; i < pips.size(); ++i)
+	{
+		pips[i].setPosition(GetPipPosition(pipTime));
+		pipTime += pipTimeStep;
+	}
+
+	//Update acceleration
+	//SetAcceleration();
+
+	float joystickZ = sf::Joystick::getAxisPosition(playerIDint - 1, sf::Joystick::Z);
+
+	//Fire grenade
+	if (playerIDint == 1)
+	{
+		if (joystickZ < 0 && fireTimer.getElapsedTime() >= fireCooldown)
+		{
+			FireGrenade();
+		}
+	}
+	if (playerIDint == 2)
+	{
+		if (joystickZ < 0 && fireTimer.getElapsedTime() >= fireCooldown)
+		{
+			FireGrenade();
+		}
+	}
 }
 
 void Player::Draw(sf::RenderTarget& target)
 {
-    OnScreenActor::Draw(target);
+	PhysicsObject::Draw(target);
 
-    // Draw pips
-    for (int i = 0; i < pips.size(); ++i)
-    {
-        target.draw(pips[i]);
-    }
+	//Draw pips
+	for (int i = 0; i < pips.size(); ++i)
+	{
+		target.draw(pips[i]);
+	}
 }
 
 void Player::HandleCollision(OnScreenActor& other)
 {
-    // Practical Task - Physics Alternatives
-    sf::Vector2f depth = CalculateCollisionDepth(other);
-    sf::Vector2f newPosition = GetPosition();
-    const float JUMPSPEED = 0; // No jump required right now
-    if (abs(depth.x) < abs(depth.y))
-    {
-        // Move in x direction
-        newPosition.x += depth.x;
-        velocity.x = 0;
-        acceleration.x = 0;
-    }
-    else
-    {
-        // Move in y direction
-        newPosition.y += depth.y;
-        velocity.y = 0;
-        acceleration.y = 0;
-        // Collision from above
-        if (depth.y < 0)
-        {
-            velocity.y = -JUMPSPEED;
-        }
-    }
-    SetPosition(newPosition);
+	//Practical Task - Physics Alternatives
+	sf::Vector2f depth = CalculateCollisionDepth(other);
+	sf::Vector2f newPosition = GetPosition();
+	const float JUMPSPEED = 500;
+
+	if (abs(depth.x) < abs(depth.y))
+	{
+		//Move in x direction
+		newPosition.x += depth.x * 2.0f;
+		velocity.x = 0;
+		acceleration.x = 0;
+	}
+	else
+	{
+		//Move in y direction
+		newPosition.y += depth.y * 2.0f;
+		velocity.y = 0;
+		acceleration.y = 0;
+
+		//Collision from above
+		if (depth.y < 0)
+		{
+			if (playerIDint == 1)
+			{
+				if (sf::Joystick::isButtonPressed(0, 0))
+				{
+					velocity.y = -JUMPSPEED;
+				}
+			}
+			if (playerIDint == 2)
+			{
+				if (sf::Joystick::isButtonPressed(1, 0))
+				{
+					velocity.y = -JUMPSPEED;
+				}
+			}
+		}
+	}
+
+	SetPosition(newPosition);
+
+	OnScreenActor* onScreenActorPtr = &other;
+	Grenade* grenadePtr = dynamic_cast<Grenade*>(onScreenActorPtr);
+
+	if (grenadePtr != nullptr)
+	{
+		if (playerIDint == 1)
+		{
+			player1Lives = takep1Lives(1);
+		}
+
+		if (playerIDint == 2)
+		{
+			player2Lives = takep2Lives(1);
+		}
+
+		//playerLevel->DestroyGrenade(playerGrenade)
+		if (player1Lives <= 0)
+		{
+			playerLevel->TriggerEndState(true, false);
+		}
+		if (player2Lives <= 0)
+		{
+			playerLevel->TriggerEndState(false, true);
+		}
+	}
 }
 
-void Player::PlayerMovement()
+void Player::SetAcceleration()
 {
-    // Practical Task - Physics Alternatives
-    const float ACCEL = 5000;
-    const float GRAVITY = 1000;
-    acceleration.x = 0;
-    acceleration.y = GRAVITY;
-    if (playerIDint == 1)
-    {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        {
-            acceleration.x = -ACCEL;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        {
-            acceleration.x = ACCEL;
-        }
-    }
-    if (playerIDint == 2)
-    {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        {
-            acceleration.x = -ACCEL;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        {
-            acceleration.x = ACCEL;
-        }
-    }
+	//Practical Task - Physics Alternatives
+	PhysicsObject::SetAcceleration();
+
+	const float ACCEL = 5000.0f;
+	const float JOYSTICK_FACTOR = 0.1f;
+	const float DEADZONE = 10.0f;
+
+	if (sf::Joystick::isConnected(playerIDint - 1))
+	{
+		float joystickX = sf::Joystick::getAxisPosition(playerIDint - 1, sf::Joystick::X);
+		float joystickU = sf::Joystick::getAxisPosition(playerIDint - 1, sf::Joystick::U);
+		float joystickV = sf::Joystick::getAxisPosition(playerIDint - 1, sf::Joystick::V);
+
+		if (joystickX > DEADZONE || joystickX < -DEADZONE)
+		{
+			acceleration.x = joystickX * ACCEL * JOYSTICK_FACTOR;
+		}
+		if (joystickU > DEADZONE || joystickU < -DEADZONE)
+		{
+			fireVelocity.x = joystickU / JOYSTICK_FACTOR;
+		}
+		if (joystickV > DEADZONE || joystickV < -DEADZONE)
+		{
+			fireVelocity.y = joystickV / JOYSTICK_FACTOR;
+		}
+	}
+	else if (!sf::Joystick::isConnected(playerIDint - 1))
+	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		{
+			acceleration.x = -ACCEL;
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		{
+			acceleration.x = ACCEL;
+		}
+	}
 }
 
 sf::Vector2f Player::GetPipPosition(float pipTime)
 {
-    // Practical Task - Gravity Prediction
-    sf::Vector2f pipPosition;
+	//Practical Task - Gravity Prediction
+	sf::Vector2f pipPosition;
 
-    pipPosition = sf::Vector2f(0.0f, 1000.0f) * pipTime * pipTime
-        + sf::Vector2f(500.0f, -1000.0f) * pipTime
-        + sf::Vector2f(500.0f, 500.0f);
+	//pipPosition = sf::Vector2f(0.0f, 1000.0f) * pipTime * pipTime
+	//	+ sf::Vector2f(500.0f, -1000.0f) * pipTime
+	//	+ sf::Vector2f(500.0f, 500.0f);
 
-    return pipPosition;
+	pipPosition = sf::Vector2f(0.0f, gravity / 2.0f) * pipTime * pipTime
+		+ fireVelocity * pipTime
+		+ GetPosition();
+
+	return pipPosition;
+}
+
+void Player::FireGrenade()
+{
+	playerLevel->FireGrenade(GetPosition(), fireVelocity, playerIDint); //Position, velocity, owner
+	fireTimer.restart();
 }
 
 void Player::SetPlayerID(std::string newPlayerIDstr)
 {
-    playerIDstr = newPlayerIDstr;
-    sprite.setTexture(AssetManager::RequestTexture("player_" + playerIDstr + "_stand"));
+	playerIDstr = newPlayerIDstr;
+	sprite.setTexture(AssetManager::RequestTexture("player_" + playerIDstr + "_stand"));
 }
 
 void Player::SetPlayerID(int newPlayerIDint)
 {
-    playerIDint = newPlayerIDint;
+	playerIDint = newPlayerIDint;
 }
 
+int Player::takep1Lives(int lifeTake1)
+{
+	player1Lives = player1Lives - lifeTake1;
+	return player1Lives;
+}
+
+int Player::takep2Lives(int lifeTake2)
+{
+	player2Lives = player2Lives - lifeTake2;
+	return player2Lives;
+}

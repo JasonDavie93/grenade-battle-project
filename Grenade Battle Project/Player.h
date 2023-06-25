@@ -2,52 +2,61 @@
 // Default libraries
 #include <iostream>
 // Classes
-#include "OnScreenActor.h"
+#include "PhysicsObject.h"
 // Forward declarations
-// class Grenade;
+class Grenade;
 class LevelScreen;
 
-// Definition of the Player class, which inherits from OnScreenActor
-class Player : public OnScreenActor
+// Definition of the Player class, which inherits from PhysicsObject
+class Player : public PhysicsObject
 {
 public:
-    // Constructor
-    Player(std::string newPlayerIDstr, int newPlayerIDint);
+	// Constructor
+	Player(std::string newPlayerIDstr, int newPlayerIDint, LevelScreen* newCurrentLevel);
 
-    // Overrides the Update function from the base class
-    void Update(sf::Time frameTime) override;
-    // Overrides the Draw function from the base class
-    void Draw(sf::RenderTarget& target) override;
+	// Overrides the Update function from the base class
+	void Update(sf::Time frameTime) override;
+	// Overrides the Draw function from the base class
+	void Draw(sf::RenderTarget& target) override;
 
-    // Overrides the HandleCollision function from the base class
-    void HandleCollision(OnScreenActor& other) override;
+	// Overrides the HandleCollision function from the base class
+	void HandleCollision(OnScreenActor& other) override;
 
-    // Setter functions to set the player's ID
-    void SetPlayerID(std::string newPlayerIDstr);
-    void SetPlayerID(int newPlayerIDint);
+	// Setter functions to set the player's ID
+	void SetPlayerID(std::string newPlayerIDstr);
+	void SetPlayerID(int newPlayerIDint);
 
+	int takep1Lives(int lifeTake1);
+	int takep2Lives(int lifeTake2);
+
+	LevelScreen* playerLevel;
 private:
-    // Private helper function for player movement
-    void PlayerMovement();
+	void SetAcceleration() override;
+	sf::Vector2f GetPipPosition(float pipTime);
 
-    // Calculates the position of the pip based on the given time
-    sf::Vector2f GetPipPosition(float pipTime);
+	void FireGrenade();
 
-    // Private member variables
-    sf::Vector2f twoFramesOldPos; // Position of the player two frames ago
-    sf::Vector2f velocity; // Velocity of the player
-    sf::Vector2f acceleration; // Acceleration of the player
-    sf::Sprite playerSprite; // Sprite for rendering the player
-    sf::Sound playerJumpSound; // Sound for player jumps
-    sf::Sound playerDeathSound; // Sound for player deaths
-    std::string playerIDstr; // ID of the player as a string
-    int playerIDint; // ID of the player as an integer
-    LevelScreen* playerLevel; // Pointer to the LevelScreen the player is in
-    bool isGrounded; // Flag indicating if the player is on the ground
-    bool isAlive; // Flag indicating if the player is alive
-    sf::Vector2f hitboxOffset; // Offset of the player's hitbox
-    sf::Vector2f hitboxScale; // Scale of the player's hitbox
-    sf::Vector2f aimTarget; // Target position for aiming
-    // Grenade* playerGrenade; // Pointer to a Grenade object (commented out)
-    std::vector<sf::Sprite> pips; // Vector of sprites representing pips
+	//void AimGrenade(sf::Vector2f newAimTarget);
+	//void FireGrenade(sf::Vector2f newAimTarget);
+
+	sf::Vector2f twoFramesOldPos;
+	sf::Sprite playerSprite;
+	sf::Sound playerJumpSound;
+	sf::Sound playerDeathSound;
+	std::string playerIDstr;
+	int playerIDint;
+	bool isGrounded;
+	bool isAlive;
+	sf::Vector2f aimTarget;
+	Grenade* playerGrenade;
+	std::vector<sf::Sprite> pips;
+
+	sf::Vector2f fireVelocity;
+
+	sf::Time fireCooldown;
+	sf::Clock fireTimer;
+
+	int playerLives;
+	int player1Lives;
+	int player2Lives;
 };

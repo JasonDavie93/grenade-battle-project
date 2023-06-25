@@ -32,5 +32,5 @@ public:
     LevelScreen* grenadeLevel; // Pointer to the LevelScreen object
 
 private:
-    // Private data (no specific annotations provided)
+    // Private data 
 };
