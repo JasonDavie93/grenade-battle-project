@@ -19,3 +19,5 @@ namespace EaseOutFunction
     sf::Vector2f EaseOutQuad(sf::Vector2f begin, sf::Vector2f change, float duration, float time);
     // The function uses the Ease Out Quad equation to calculate the eased value. The easing equation provides a smooth transition between the starting and ending values.
 }
+
+
