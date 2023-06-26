@@ -34,13 +34,13 @@ public:
     std::string levelIDstr; // String to store the level ID
     int levelIDint; // Integer to store the level ID
 
+
 protected:
     // No protected members declared in this class
 
 private:
     Player* player1; // Pointer to player 1 object
     Player* player2; // Pointer to player 2 object
-
     EndingScreen endScreen; // Instance of the EndPanel class
     bool gameRunning; // Flag indicating whether the game is running
     bool grenadeAlive; // Flag indicating whether a grenade is alive
@@ -52,9 +52,11 @@ private:
     sf::Text scoreDisplay; // Text object for displaying score
     int scoreValue; // Current score value
 
+
+   
     sf::View cameraView; // View for camera positioning
 
     sf::Music gameMusic; // Music for the game
 
-    int currentLevel; // Current level number
+    int currentLevel;
 };

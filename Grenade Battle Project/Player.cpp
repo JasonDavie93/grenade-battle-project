@@ -27,7 +27,7 @@ Player::Player(std::string newPlayerIDstr, int newPlayerIDint, LevelScreen* newC
 	, player2Lives(3)
 {
 	sprite.setTexture(AssetManager::RequestTexture("player_" + playerIDstr + "_stand"));
-
+	
 	collisionType = CollisionType::CIRCLE;
 
 	collisionOffset = sf::Vector2f(0.0f, 0.0f);
@@ -219,6 +219,7 @@ void Player::FireGrenade()
 {
 	playerLevel->FireGrenade(GetPosition(), fireVelocity, playerIDint); //Position, velocity, owner
 	fireTimer.restart();
+	sf::Sound(AssetManager::RequestSoundBuffer("Shoot"));
 }
 
 void Player::SetPlayerID(std::string newPlayerIDstr)

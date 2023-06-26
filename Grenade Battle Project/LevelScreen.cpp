@@ -29,6 +29,7 @@ LevelScreen::LevelScreen(Game* newGamePtr)
 	, scoreValue(0)
 	, cameraView()
 	, gameMusic()
+	,currentLevel()
 	
 {
 	
@@ -161,7 +162,6 @@ void LevelScreen::Update(sf::Time frameTime)
 	{
 		endScreen.Update(frameTime);
 
-		
 	}
 	if (!grenadeAlive)
 	{
@@ -196,6 +196,7 @@ void LevelScreen::FireGrenade(sf::Vector2f firePosition, sf::Vector2f fireVeloci
 {
 	grenadeAlive = true;
 	grenadeVector.push_back(new Grenade(firePosition, fireVelocity, grenadeOwner));
+	
 }
 
 void LevelScreen::TriggerEndState(bool player1win, bool player2win)
@@ -218,4 +219,3 @@ bool LevelScreen::CheckGrenadeAlive(bool isGrenadeAlive)
 	return false;
 }
 
-	

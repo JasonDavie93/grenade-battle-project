@@ -10,8 +10,8 @@ OnScreenActor::OnScreenActor()
 	: sprite()  // Initializing member variables
 	, position(0,0)
 	, colliding(false)
-	, collisionOffset(0, 0)
-	, collisionScale(1, 1)
+	, collisionOffset()
+	, collisionScale()
 	, collisionType(CollisionType::AABB)
 	, alive(true)
 {
@@ -36,7 +36,7 @@ void OnScreenActor::Draw(sf::RenderTarget& target)
 
 	target.draw(sprite); // Draw the actor's sprite
 
-	bool drawCollider = true; // Flag indicating whether to draw the collider or not
+	bool drawCollider = false; // Flag indicating whether to draw the collider or not
 
 	if (drawCollider)
 	{
@@ -109,6 +109,7 @@ void OnScreenActor::SetPosition(sf::Vector2f newPosition)
 void OnScreenActor::SetPosition(float newX, float newY)
 {
 	SetPosition(sf::Vector2f(newX, newY));
+
 }
 
 // Check for collision between this actor and another actor
@@ -120,7 +121,7 @@ bool OnScreenActor::CheckCollision(OnScreenActor other)
 	}
 	return GetAABB().intersects(other.GetAABB());
 	//Practicle Task - Collision Geometry
-
+	/*
 	switch (collisionType)
 	{
 	case CollisionType::AABB:
@@ -192,7 +193,7 @@ bool OnScreenActor::CheckCollision(OnScreenActor other)
 		return GetAABB().intersects(other.GetAABB()); // Default to AABB intersection if collision types are unknown
 	}
 	break;
-	}
+	}*/
 }
 
 // Set the colliding flag of the actor

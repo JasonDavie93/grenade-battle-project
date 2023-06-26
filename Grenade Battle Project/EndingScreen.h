@@ -27,8 +27,8 @@ public:
     void DecideWin(bool newPlayer1win, bool newPlayer2win);   // Determines the winner
 
 private:
-    // Private member variables
-    sf::Sprite background;       // Sprite for background
+  
+    sf::Sprite backgroundOverLay;   //Sprite for overlay 
     sf::Text title;              // Text for title
     sf::Text message;            // Text for message
     sf::RenderWindow* window;    // Pointer to the SFML window

@@ -5,7 +5,7 @@
 // This pragma directive ensures that the header file is included only once during compilation, preventing multiple inclusions and potential errors.
 
 // Practical task - Easing function
-namespace EaseOutFunction
+namespace EasingFunction
 {
     // This namespace contains various easing functions used for interpolation and animation.
 

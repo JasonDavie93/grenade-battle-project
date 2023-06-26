@@ -1,10 +1,10 @@
 #include "EndingScreen.h"
 #include "AssetManager.h"
-#include "EaseOutFunction.h"
+#include "EasingFunction.h"
 
 EndingScreen::EndingScreen(sf::RenderWindow* newWindow)
     : OnScreenActor()
-    , background()
+    , backgroundOverLay()
     , title()
     , message()
     , window(newWindow)
@@ -13,13 +13,12 @@ EndingScreen::EndingScreen(sf::RenderWindow* newWindow)
     , player1win()
     , player2win()
 {
-    // Initializing member variables and setting up the background texture
 
-    background.setTexture(AssetManager::RequestTexture("backgroundEnd"));
-    background.setScale(6.0f, 6.0f);
+    backgroundOverLay.setTexture(AssetManager::RequestTexture("backgroundEndPanel"));
+    backgroundOverLay.setScale(6.0f, 6.0f);
 
     // Set up the title font and character size based on the winner
-    title.setFont(AssetManager::RequestFont("dogica"));
+    title.setFont(AssetManager::RequestFont("georgia"));
     title.setCharacterSize(70);
     DecideWin(player1win, player2win);
 
@@ -38,9 +37,9 @@ void EndingScreen::Update(sf::Time frameTime)
     {
         // Animation logic to move the panel from its initial position to the final position
 
-        float xPos = window->getSize().x * 0.5f - background.getGlobalBounds().width * 0.5f;
+        float xPos = window->getSize().x * 0.5f - backgroundOverLay.getGlobalBounds().width * 0.5f;
         float yPos = window->getSize().y;
-        float finalYPos = window->getSize().y * 0.5f - background.getGlobalBounds().height * 0.5f;
+        float finalYPos = window->getSize().y * 0.5f - backgroundOverLay.getGlobalBounds().height * 0.5f;
 
         sf::Vector2f begin(xPos, yPos);
         sf::Vector2f change(0, finalYPos - yPos);
@@ -48,7 +47,7 @@ void EndingScreen::Update(sf::Time frameTime)
         float time = animationClock.getElapsedTime().asSeconds();
 
         // Calculate the new position based on easing function
-        sf::Vector2f newPosition = EaseOutFunction::EaseOutQuad(begin, change, duration, time);
+        sf::Vector2f newPosition = EasingFunction::EaseOutQuad(begin, change, duration, time);
         SetPosition(newPosition);
 
         if (time >= duration)
@@ -64,7 +63,7 @@ void EndingScreen::Draw(sf::RenderTarget& target)
     // Draw the EndingScreen components onto the target
 
     OnScreenActor::Draw(target);  // Assuming there's an implementation in the base class
-    target.draw(background);
+    target.draw(backgroundOverLay);
     target.draw(message);
     target.draw(title);
 }
@@ -73,17 +72,18 @@ void EndingScreen::SetPosition(sf::Vector2f newPosition)
 {
     // Set the position of the EndingScreen and adjust the positions of the title and message
 
-    background.setPosition(newPosition);
+    backgroundOverLay.setPosition(newPosition);
 
     // Center the title on the x-direction
-    float titleX = background.getGlobalBounds().width * 0.5f - title.getGlobalBounds().width * 0.5f;
-    title.setPosition(sf::Vector2f(newPosition.x + titleX, newPosition.y + 50));
+    float titleX2 = backgroundOverLay.getGlobalBounds().width * 0.5f - title.getGlobalBounds().width * 0.5f;
+    title.setPosition(sf::Vector2f(newPosition.x + titleX2, newPosition.y + 50));
 
     // Center the message on the x and y directions
-    float messageX = background.getGlobalBounds().width * 0.5f - message.getGlobalBounds().width * 0.5f;
-    float messageY = background.getGlobalBounds().height * 0.5f - message.getGlobalBounds().height * 0.5f;
+    float messageX2 = backgroundOverLay.getGlobalBounds().width * 0.5f - message.getGlobalBounds().width * 0.5f;
+    float messageY2 = backgroundOverLay.getGlobalBounds().height * 0.5f - message.getGlobalBounds().height * 0.5f;
 
-    message.setPosition(sf::Vector2f(newPosition.x + messageX, newPosition.y + messageY));
+    message.setPosition(sf::Vector2f(newPosition.x + messageX2, newPosition.y + messageY2));
+
 }
 
 void EndingScreen::StartAnimation()
@@ -98,7 +98,7 @@ void EndingScreen::ResetPosition()
 {
     // Reset the position of the EndScreen to the initial position
 
-    float xPos = window->getSize().x * 0.5f - background.getGlobalBounds().width * 0.5f;
+    float xPos = window->getSize().x * 0.5f - backgroundOverLay.getGlobalBounds().width * 0.5f;
     float yPos = window->getSize().y;
 
     SetPosition(sf::Vector2f(xPos, yPos));
