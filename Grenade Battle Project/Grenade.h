@@ -7,7 +7,8 @@ class Player;
 class OnScreenActor;
 
 // Grenade class, derived from PhysicsObject
-class Grenade : public PhysicsObject
+class Grenade 
+    : public PhysicsObject
 {
 public:
     // Constructor

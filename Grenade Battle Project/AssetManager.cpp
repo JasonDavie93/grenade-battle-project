@@ -1,4 +1,5 @@
 #include "AssetManager.h"
+
 // Definitions of static members
 // Initialize the static maps for storing assets
 std::map<std::string, sf::Texture> AssetManager::textures;
@@ -24,6 +25,24 @@ sf::Texture& AssetManager::RequestTexture(std::string textureName)
     }
 }
 
+// Request a sound buffer by name
+sf::SoundBuffer& AssetManager::RequestSoundBuffer(std::string bufferName)
+{
+    auto pairFound = soundBuffers.find(bufferName); // Search the soundBuffers map for the specified buffer name
+
+    if (pairFound != soundBuffers.end())
+    {
+        // We found an existing sound buffer! Use it
+        return pairFound->second; // Return the sound buffer (value) associated with the buffer name (key)
+    }
+    else
+    {
+        sf::SoundBuffer& newSoundBuffer = soundBuffers[bufferName]; // Create a new entry in the soundBuffers map with the buffer name as the key
+        newSoundBuffer.loadFromFile("Assets/" + bufferName + ".ogg"); // Load the sound buffer from the specified file
+        return newSoundBuffer; // Return the newly loaded sound buffer
+    }
+}
+
 // Request a font by name
 sf::Font& AssetManager::RequestFont(std::string fontName)
 {
@@ -42,23 +61,7 @@ sf::Font& AssetManager::RequestFont(std::string fontName)
     }
 }
 
-// Request a sound buffer by name
-sf::SoundBuffer& AssetManager::RequestSoundBuffer(std::string bufferName)
-{
-    auto pairFound = soundBuffers.find(bufferName); // Search the soundBuffers map for the specified buffer name
 
-    if (pairFound != soundBuffers.end())
-    {
-        // We found an existing sound buffer! Use it
-        return pairFound->second; // Return the sound buffer (value) associated with the buffer name (key)
-    }
-    else
-    {
-        sf::SoundBuffer& newSoundBuffer = soundBuffers[bufferName]; // Create a new entry in the soundBuffers map with the buffer name as the key
-        newSoundBuffer.loadFromFile("Assets/" + bufferName + ".png"); // Load the sound buffer from the specified file
-        return newSoundBuffer; // Return the newly loaded sound buffer
-    }
-}
 
 // Destroy all loaded assets
 void AssetManager::DestroyAllAssets()

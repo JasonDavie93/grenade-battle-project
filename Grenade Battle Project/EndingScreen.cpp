@@ -15,7 +15,7 @@ EndingScreen::EndingScreen(sf::RenderWindow* newWindow)
 {
     // Initializing member variables and setting up the background texture
 
-    background.setTexture(AssetManager::RequestTexture("endScreen"));
+    background.setTexture(AssetManager::RequestTexture("backgroundEnd"));
     background.setScale(6.0f, 6.0f);
 
     // Set up the title font and character size based on the winner
@@ -27,7 +27,7 @@ EndingScreen::EndingScreen(sf::RenderWindow* newWindow)
     message.setFont(AssetManager::RequestFont("dogica"));
     message.setCharacterSize(30);
     message.setString("Press Esc to quit");
-
+    message.setFillColor(sf::Color::Black);
     // Reset the position of the EndPanel
     ResetPosition();
 }

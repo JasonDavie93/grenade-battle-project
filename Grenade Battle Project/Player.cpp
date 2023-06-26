@@ -167,7 +167,7 @@ void Player::SetAcceleration()
 	//Practical Task - Physics Alternatives
 	PhysicsObject::SetAcceleration();
 
-	const float ACCEL = 5000.0f;
+	const float ACCEL = 2000.0f;
 	const float JOYSTICK_FACTOR = 0.1f;
 	const float DEADZONE = 10.0f;
 

@@ -9,10 +9,12 @@ enum class PhysicsType
     SYMPLECTIC_EULER     // Semi-Implicit Euler
 };
 
-    Grenade::Grenade(sf::Vector2f newPosition, sf::Vector2f newFireVelocity, int owner)
-        : PhysicsObject()
-       , owner(owner)
-        , isAlive(true)
+Grenade::Grenade(sf::Vector2f newPosition, sf::Vector2f newFireVelocity, int owner)
+    : PhysicsObject()
+    , owner(owner)
+    , isAlive(true)
+    , grenadeLevel(0)
+
     {
         // Set the texture of the grenade sprite
         sprite.setTexture(AssetManager::RequestTexture("grenade"));
@@ -93,7 +95,7 @@ enum class PhysicsType
             // Collision from above
             if (depth.y < 0)
             {
-                // velocity.y = -JUMPSPEED;
+                
             }
         }
 
