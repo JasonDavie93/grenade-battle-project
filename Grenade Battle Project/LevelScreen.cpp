@@ -47,6 +47,7 @@ LevelScreen::LevelScreen(Game* newGamePtr)
 	player2->SetPosition(700.0f, 700.0f); // Set the position of player 2
 
 	platformTiles.push_back(new Platform(sf::Vector2f(300.0f, 900.0f))); // Create a new Platform object and add it to the vector
+	platformTiles.push_back(new Platform(sf::Vector2f(900.0f, 300.0f))); // Create a new Platform object and add it to the vector
 
 	int x = 0;
 

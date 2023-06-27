@@ -219,7 +219,7 @@ void Player::FireGrenade()
 {
 	playerLevel->FireGrenade(GetPosition(), fireVelocity, playerIDint); //Position, velocity, owner
 	fireTimer.restart();
-	sf::Sound(AssetManager::RequestSoundBuffer("Shoot"));
+	
 }
 
 void Player::SetPlayerID(std::string newPlayerIDstr)
