@@ -13,7 +13,7 @@ Grenade::Grenade(sf::Vector2f newPosition, sf::Vector2f newFireVelocity, int own
     : PhysicsObject()
     , owner(owner)
     , isAlive(true)
-    //, grenadeLevel(0)
+    , grenadeLevel(0)
 
     {
         // Set the texture of the grenade sprite

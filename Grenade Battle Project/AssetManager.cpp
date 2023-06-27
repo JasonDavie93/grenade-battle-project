@@ -56,7 +56,7 @@ sf::Font& AssetManager::RequestFont(std::string fontName)
     else
     {
         sf::Font& newFont = fonts[fontName]; // Create a new entry in the fonts map with the font name as the key
-        newFont.loadFromFile("Assets/Fonts/" + fontName + ".tff"); // Load the font from the specified file
+        newFont.loadFromFile("Assets/Fonts/" + fontName + ".ttf"); // Load the font from the specified file
         return newFont; // Return the newly loaded font
     }
 }
