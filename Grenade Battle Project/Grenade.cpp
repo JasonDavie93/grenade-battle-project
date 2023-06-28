@@ -14,11 +14,13 @@ Grenade::Grenade(sf::Vector2f newPosition, sf::Vector2f newFireVelocity, int own
     , owner(owner)
     , isAlive(true)
     , grenadeLevel(0)
+    
 
     {
         // Set the texture of the grenade sprite
         sprite.setTexture(AssetManager::RequestTexture("grenade"));
-
+        
+        
         // Set the position and velocity of the grenade
         SetPosition(newPosition);
         velocity = newFireVelocity;
@@ -43,6 +45,7 @@ Grenade::Grenade(sf::Vector2f newPosition, sf::Vector2f newFireVelocity, int own
     void Grenade::Draw(sf::RenderTarget& target)
     {
         PhysicsObject::Draw(target);
+        
     }
 
     // Set the owner of the grenade

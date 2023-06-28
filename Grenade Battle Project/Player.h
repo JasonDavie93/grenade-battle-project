@@ -41,6 +41,9 @@ private:
 	sf::Sound playerJumpSound;
 	sf::Sound playerDeathSound;
 	sf::Sound shoot;
+	sf::Sound endSound;
+	sf::Sound startSound;
+	sf::Sound explosionSound;
 	std::string playerIDstr;
 	int playerIDint;
 	bool isGrounded;

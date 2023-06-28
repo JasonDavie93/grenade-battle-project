@@ -31,6 +31,7 @@ public:
     int owner; // The number for the player that fired the grenade
     bool isAlive;
     LevelScreen* grenadeLevel; // Pointer to the LevelScreen object
+   
 
 private:
     // Private data 

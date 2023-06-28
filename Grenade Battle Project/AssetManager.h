@@ -27,5 +27,4 @@ private:
 	static std::map<std::string, sf::SoundBuffer> soundBuffers;
 	// Map to store loaded fonts, using font name as key
 	static std::map<std::string, sf::Font> fonts;
-
 };

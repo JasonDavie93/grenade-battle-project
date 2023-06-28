@@ -12,11 +12,12 @@ EndingScreen::EndingScreen(sf::RenderWindow* newWindow)
     , animationClock()
     , player1win()
     , player2win()
+    
 {
 
     backgroundOverLay.setTexture(AssetManager::RequestTexture("backgroundEndPanel"));
     backgroundOverLay.setScale(6.0f, 6.0f);
-
+  
     // Set up the title font and character size based on the winner
     title.setFont(AssetManager::RequestFont("georgia"));
     title.setCharacterSize(70);
@@ -33,6 +34,7 @@ EndingScreen::EndingScreen(sf::RenderWindow* newWindow)
 
 void EndingScreen::Update(sf::Time frameTime)
 {
+  
     if (animatingIn)
     {
         // Animation logic to move the panel from its initial position to the final position
@@ -49,7 +51,7 @@ void EndingScreen::Update(sf::Time frameTime)
         // Calculate the new position based on easing function
         sf::Vector2f newPosition = EasingFunction::EaseOutQuad(begin, change, duration, time);
         SetPosition(newPosition);
-
+       
         if (time >= duration)
         {
             SetPosition(begin + change);

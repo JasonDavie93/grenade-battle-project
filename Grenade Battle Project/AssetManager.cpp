@@ -1,11 +1,11 @@
 #include "AssetManager.h"
 
+
 // Definitions of static members
 // Initialize the static maps for storing assets
 std::map<std::string, sf::Texture> AssetManager::textures;
 std::map<std::string, sf::SoundBuffer> AssetManager::soundBuffers;
 std::map<std::string, sf::Font> AssetManager::fonts;
-
 // Request a texture by name
 sf::Texture& AssetManager::RequestTexture(std::string textureName)
 {

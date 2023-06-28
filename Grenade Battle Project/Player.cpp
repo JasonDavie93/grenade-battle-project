@@ -11,6 +11,7 @@ Player::Player(std::string newPlayerIDstr, int newPlayerIDint, LevelScreen* newC
 	, playerSprite()
 	, playerJumpSound()
 	, playerDeathSound()
+	, shoot()
 	, playerIDstr(newPlayerIDstr)
 	, playerIDint(newPlayerIDint)
 	, playerLevel(newCurrentLevel)
@@ -25,6 +26,9 @@ Player::Player(std::string newPlayerIDstr, int newPlayerIDint, LevelScreen* newC
 	, playerLives(3)
 	, player1Lives(3)
 	, player2Lives(3)
+	, endSound()
+	, startSound()
+	, explosionSound()
 {
 	sprite.setTexture(AssetManager::RequestTexture("player_" + playerIDstr + "_stand"));
 	
@@ -32,7 +36,18 @@ Player::Player(std::string newPlayerIDstr, int newPlayerIDint, LevelScreen* newC
 
 	collisionOffset = sf::Vector2f(0.0f, 0.0f);
 	collisionScale = sf::Vector2f(1.0f, 1.0f);
-
+	//load sound for shoot
+	shoot.setBuffer(AssetManager::RequestSoundBuffer("shoot"));
+	//load sound for 
+	playerJumpSound.setBuffer(AssetManager::RequestSoundBuffer("jump"));
+	//load sound for 
+	playerDeathSound.setBuffer(AssetManager::RequestSoundBuffer("die"));
+	//Load Sound for win
+	endSound.setBuffer(AssetManager::RequestSoundBuffer("win"));
+	//Load Sound for start
+	startSound.setBuffer(AssetManager::RequestSoundBuffer("start"));
+	//load sound for Explosion
+	explosionSound.setBuffer(AssetManager::RequestSoundBuffer("explosion"));
 	//Add sprites to pips
 	const int NUM_PIPS = 5;
 
@@ -70,6 +85,8 @@ void Player::Update(sf::Time frameTime)
 		if (joystickZ < 0 && fireTimer.getElapsedTime() >= fireCooldown)
 		{
 			FireGrenade();
+			shoot.play();
+			
 		}
 	}
 	if (playerIDint == 2)
@@ -77,6 +94,8 @@ void Player::Update(sf::Time frameTime)
 		if (joystickZ < 0 && fireTimer.getElapsedTime() >= fireCooldown)
 		{
 			FireGrenade();
+			shoot.play();
+			shoot.setLoop(false);
 		}
 	}
 }
@@ -121,6 +140,7 @@ void Player::HandleCollision(OnScreenActor& other)
 				if (sf::Joystick::isButtonPressed(0, 0))
 				{
 					velocity.y = -JUMPSPEED;
+					playerJumpSound.play();
 				}
 			}
 			if (playerIDint == 2)
@@ -128,6 +148,8 @@ void Player::HandleCollision(OnScreenActor& other)
 				if (sf::Joystick::isButtonPressed(1, 0))
 				{
 					velocity.y = -JUMPSPEED;
+					playerJumpSound.play();
+					
 				}
 			}
 		}
@@ -143,6 +165,7 @@ void Player::HandleCollision(OnScreenActor& other)
 		if (playerIDint == 1)
 		{
 			player1Lives = takep1Lives(1);
+
 		}
 
 		if (playerIDint == 2)
@@ -154,10 +177,14 @@ void Player::HandleCollision(OnScreenActor& other)
 		if (player1Lives <= 0)
 		{
 			playerLevel->TriggerEndState(true, false);
+			playerDeathSound.play();
+			endSound.play();
 		}
 		if (player2Lives <= 0)
 		{
 			playerLevel->TriggerEndState(false, true);
+			playerDeathSound.play();
+			endSound.play();
 		}
 	}
 }
@@ -226,6 +253,7 @@ void Player::SetPlayerID(std::string newPlayerIDstr)
 {
 	playerIDstr = newPlayerIDstr;
 	sprite.setTexture(AssetManager::RequestTexture("player_" + playerIDstr + "_stand"));
+	startSound.play();
 }
 
 void Player::SetPlayerID(int newPlayerIDint)
@@ -236,11 +264,13 @@ void Player::SetPlayerID(int newPlayerIDint)
 int Player::takep1Lives(int lifeTake1)
 {
 	player1Lives = player1Lives - lifeTake1;
+	explosionSound.play();
 	return player1Lives;
 }
 
 int Player::takep2Lives(int lifeTake2)
 {
 	player2Lives = player2Lives - lifeTake2;
+	explosionSound.play();
 	return player2Lives;
 }

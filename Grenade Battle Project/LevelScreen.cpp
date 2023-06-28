@@ -1,6 +1,7 @@
 // Default libraries
 #include <fstream>
 #include <iostream>
+#include <SFML/Audio.hpp>
 
 // Classes
 #include "LevelScreen.h"
@@ -33,7 +34,7 @@ LevelScreen::LevelScreen(Game* newGamePtr)
 	
 {
 	
-
+	
 	player1 = new Player("1", 1, this); // Create a new Player object with ID "1" and player number 1
 	player2 = new Player("2", 2, this); // Create a new Player object with ID "2" and player number 2
 
@@ -48,8 +49,8 @@ LevelScreen::LevelScreen(Game* newGamePtr)
 
 	platformTiles.push_back(new Platform(sf::Vector2f(300.0f, 900.0f))); // Create a new Platform object and add it to the vector
 	
-
 	int x = 0;
+	
 
 
 	for (int i = 0; i < 50; i++)
@@ -66,6 +67,7 @@ void LevelScreen::Update(sf::Time frameTime)
 {
 	if (gameRunning)
 	{
+		gameMusic.play();
 		// Updates
 		player1->Update(frameTime);
 		player2->Update(frameTime);
