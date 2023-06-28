@@ -19,8 +19,8 @@ EndingScreen::EndingScreen(sf::RenderWindow* newWindow)
     backgroundOverLay.setScale(6.0f, 6.0f);
   
     // Set up the title font and character size based on the winner
-    title.setFont(AssetManager::RequestFont("georgia"));
-    title.setCharacterSize(70);
+    title.setFont(AssetManager::RequestFont("dogica"));
+    title.setCharacterSize(40);
     DecideWin(player1win, player2win);
 
     // Set up the message font, character size, and content

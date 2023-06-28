@@ -25,16 +25,28 @@ LevelScreen::LevelScreen(Game* newGamePtr)
 	, player2Win(false)
 	, platformTiles()
 	, grenadeVector()
-	, gameFont()
-	, scoreDisplay()
-	, scoreValue(0)
+	, scoreDisplayP1()
+	, scoreDisplayP2()
+	, scoreValueP1(0)
+	, scoreValueP2(0)
 	, cameraView()
 	, gameMusic()
 	,currentLevel()
 	
+	
 {
 	
 	
+	scoreDisplayP1.setFont(AssetManager::RequestFont("dogica"));
+	scoreDisplayP1.setPosition(10.0f, 10.0f);
+	scoreDisplayP1.setCharacterSize(30);
+	scoreDisplayP1.setFillColor(sf::Color::Blue);
+	scoreDisplayP2.setFont(AssetManager::RequestFont("dogica"));
+	scoreDisplayP2.setPosition(1600.0f, 10.0f);
+	scoreDisplayP2.setCharacterSize(30);
+	scoreDisplayP2.setFillColor(sf::Color::Red);
+
+
 	player1 = new Player("1", 1, this); // Create a new Player object with ID "1" and player number 1
 	player2 = new Player("2", 2, this); // Create a new Player object with ID "2" and player number 2
 
@@ -49,11 +61,12 @@ LevelScreen::LevelScreen(Game* newGamePtr)
 
 	platformTiles.push_back(new Platform(sf::Vector2f(300.0f, 900.0f))); // Create a new Platform object and add it to the vector
 	
+	
 	int x = 0;
 	
 
 
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < 100; i++)
 	{
 		int j = 25;
 
@@ -141,6 +154,9 @@ void LevelScreen::Update(sf::Time frameTime)
 					player1->HandleCollision(*grenadeVector[g]);
 					grenadeVector[g]->SetAlive(false);
 					grenadeAlive = false;
+					scoreValueP2 ++;
+				
+
 				}
 			}
 
@@ -153,6 +169,9 @@ void LevelScreen::Update(sf::Time frameTime)
 					player2->HandleCollision(*grenadeVector[g]);
 					grenadeVector[g]->SetAlive(false);
 					grenadeAlive = false;
+					scoreValueP1 ++;
+					
+
 				}
 				else if (grenadeVector[g]->owner == 2)
 				{
@@ -174,6 +193,11 @@ void LevelScreen::Update(sf::Time frameTime)
 
 void LevelScreen::Draw(sf::RenderTarget& target)
 {
+	target.draw(scoreDisplayP1);
+	scoreDisplayP1.setString("Score: " + std::to_string(scoreValueP1));
+
+	target.draw(scoreDisplayP2);
+	scoreDisplayP2.setString("Score: " + std::to_string(scoreValueP2));
 	// Draw the world
 	for (int i = 0; i < platformTiles.size(); ++i)
 	{
@@ -187,6 +211,8 @@ void LevelScreen::Draw(sf::RenderTarget& target)
 
 	player1->Draw(target); // Draw players last
 	player2->Draw(target);
+	
+	
 
 	// Draw UI elements
 	if (!gameRunning)

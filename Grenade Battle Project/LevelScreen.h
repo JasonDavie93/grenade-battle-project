@@ -48,9 +48,11 @@ private:
     bool player2Win; // Flag indicating whether player 2 has won
     std::vector<Platform*> platformTiles; // Vector of Platform objects
     std::vector<Grenade*> grenadeVector; // Vector of Grenade objects
-    sf::Font gameFont; // Font for displaying text
-    sf::Text scoreDisplay; // Text object for displaying score
-    int scoreValue; // Current score value
+
+    sf::Text scoreDisplayP1; // Text object for displaying score
+    sf::Text scoreDisplayP2;
+    int scoreValueP1; // Current score value
+    int scoreValueP2;
 
 
    
