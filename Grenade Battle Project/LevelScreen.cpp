@@ -35,7 +35,8 @@ LevelScreen::LevelScreen(Game* newGamePtr)
 	
 	
 {
-	
+
+
 	//P1 Text Set Up
 	scoreDisplayP1.setFont(AssetManager::RequestFont("dogica"));
 	scoreDisplayP1.setPosition(40.0f, 10.0f);
@@ -177,7 +178,7 @@ void LevelScreen::Update(sf::Time frameTime)
 {
 	if (gameRunning)
 	{
-		gameMusic.play();
+		
 		// Updates
 		player1->Update(frameTime);
 		player2->Update(frameTime);

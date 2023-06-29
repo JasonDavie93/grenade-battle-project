@@ -8,18 +8,26 @@
 		: window(sf::VideoMode::getDesktopMode(), "Grenade Battle", sf::Style::Titlebar | sf::Style::Close) // Create the game window with specified properties
 		, gameClock() // Initialize the game clock
 		, currentScreen(nullptr) // Set the current screen to null pointer initially
-		, playerIDint()
+		
 	{
-
+		
 		window.setMouseCursorVisible(false); // Hide the mouse cursor
 		currentScreen = new LevelScreen(this); // Create a new LevelScreen and assign it as the current screen
 	}
 
 	void Game::RunGameLoop()
 	{
+		sf::Music gameMusic;
+		
+		if (!gameMusic.openFromFile("Assets/Sounds/music.ogg"))
+		{
+			return;
+		}
+		gameMusic.play();
 		//Repeat as long as the window is open
 		while (window.isOpen())
 		{
+			
 			Update(); // Update the game logic
 			Draw(); // Draw the game elements on the screen
 			EventHandling(); // Handle user input events
