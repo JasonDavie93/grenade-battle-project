@@ -31,7 +31,7 @@ LevelScreen::LevelScreen(Game* newGamePtr)
 	, scoreValueP2(0)
 	, cameraView()
 	, gameMusic()
-	,currentLevel()
+	, currentLevel()
 	
 	
 {
@@ -243,6 +243,7 @@ void LevelScreen::Update(sf::Time frameTime)
 				if (grenadeVector[g]->owner == 1)
 				{
 					// Handle collision between player 1 and grenade owned by player 1
+					
 				}
 				else if (grenadeVector[g]->owner == 2)
 				{

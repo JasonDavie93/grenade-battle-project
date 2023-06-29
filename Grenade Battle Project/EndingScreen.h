@@ -32,7 +32,8 @@ private:
     sf::Text title;              // Text for title
     sf::Text message;              //Text for message
     sf::RenderWindow* window;    // Pointer to the SFML window
-
+    int playerIDint;
+    sf::Text restart;
     bool animatingIn;            // Flag to indicate if animation is in progress
     sf::Clock animationClock;    // Clock for animation timing
 

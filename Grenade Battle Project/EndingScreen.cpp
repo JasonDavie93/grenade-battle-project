@@ -12,7 +12,8 @@ EndingScreen::EndingScreen(sf::RenderWindow* newWindow)
     , animationClock()
     , player1win()
     , player2win()
-    
+    , playerIDint()
+    , restart()
 {
 
     backgroundOverLay.setTexture(AssetManager::RequestTexture("backgroundEndPanel"));
@@ -26,8 +27,14 @@ EndingScreen::EndingScreen(sf::RenderWindow* newWindow)
     // Set up the message font, character size, and content
     message.setFont(AssetManager::RequestFont("dogica"));
     message.setCharacterSize(30);
-    message.setString("Press Esc to quit");
+    message.setString("Press B to quit");
     message.setFillColor(sf::Color::Black);
+
+    // Set up the message font, character size, and content
+    restart.setFont(AssetManager::RequestFont("dogica"));
+    restart.setCharacterSize(20);
+    restart.setString("or Press A to restart");
+    restart.setFillColor(sf::Color::Black);
     // Reset the position of the EndPanel
     ResetPosition();
 }
@@ -58,6 +65,14 @@ void EndingScreen::Update(sf::Time frameTime)
             animatingIn = false;
         }
     }
+
+    if (playerIDint == 1|| playerIDint == 2)
+    {
+        if (sf::Joystick::isButtonPressed(0, 0))
+        {
+            
+        }
+    }
 }
 
 void EndingScreen::Draw(sf::RenderTarget& target)
@@ -67,6 +82,7 @@ void EndingScreen::Draw(sf::RenderTarget& target)
     OnScreenActor::Draw(target);  // Assuming there's an implementation in the base class
     target.draw(backgroundOverLay);
     target.draw(message);
+    target.draw(restart);
     target.draw(title);
 }
 
@@ -85,6 +101,12 @@ void EndingScreen::SetPosition(sf::Vector2f newPosition)
     float messageY2 = backgroundOverLay.getGlobalBounds().height * 0.5f - message.getGlobalBounds().height * 0.5f;
 
     message.setPosition(sf::Vector2f(newPosition.x + messageX2, newPosition.y + messageY2));
+
+    // Center the message on the x and y directions
+    float restartX2 = backgroundOverLay.getGlobalBounds().width * 0.5f - restart.getGlobalBounds().width * 0.5f;
+    float restartY2 = backgroundOverLay.getGlobalBounds().height * 0.5f - restart.getGlobalBounds().height * 0.5f;
+
+    restart.setPosition(sf::Vector2f(newPosition.x + restartX2, (newPosition.y + restartY2 + 50)));
 
 }
 
