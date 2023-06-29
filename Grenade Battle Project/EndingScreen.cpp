@@ -66,13 +66,6 @@ void EndingScreen::Update(sf::Time frameTime)
         }
     }
 
-    if (playerIDint == 1|| playerIDint == 2)
-    {
-        if (sf::Joystick::isButtonPressed(0, 0))
-        {
-            
-        }
-    }
 }
 
 void EndingScreen::Draw(sf::RenderTarget& target)

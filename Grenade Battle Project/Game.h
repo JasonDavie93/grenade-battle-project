@@ -22,6 +22,5 @@ public:
 private:
 	sf::RenderWindow window; // The game window
 	sf::Clock gameClock; // Clock for measuring time
-
 	Screen* currentScreen; // Pointer to the current screen
 };

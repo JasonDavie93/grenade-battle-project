@@ -8,6 +8,7 @@
 		: window(sf::VideoMode::getDesktopMode(), "Grenade Battle", sf::Style::Titlebar | sf::Style::Close) // Create the game window with specified properties
 		, gameClock() // Initialize the game clock
 		, currentScreen(nullptr) // Set the current screen to null pointer initially
+		, playerIDint()
 	{
 
 		window.setMouseCursorVisible(false); // Hide the mouse cursor
@@ -29,15 +30,18 @@
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
-				window.close(); // Close the game if the window is closed
+			sf::Event event;
+			while (window.pollEvent(event))
+			{
+				if (event.type == sf::Event::Closed)
+					window.close();
 
-			
-				//Close the game if esc is pressed
+				// Close the game if escape is pressed
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 				{
-					window.close();  // Close the game if the Escape key is pressed
+					window.close();
 				}
+			}
 		}
 	}
 
