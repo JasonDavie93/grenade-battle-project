@@ -36,11 +36,12 @@ LevelScreen::LevelScreen(Game* newGamePtr)
 	
 {
 	
-	
+	//P1 Text Set Up
 	scoreDisplayP1.setFont(AssetManager::RequestFont("dogica"));
-	scoreDisplayP1.setPosition(10.0f, 10.0f);
+	scoreDisplayP1.setPosition(40.0f, 10.0f);
 	scoreDisplayP1.setCharacterSize(30);
 	scoreDisplayP1.setFillColor(sf::Color::Blue);
+	//P2 Text Set Up
 	scoreDisplayP2.setFont(AssetManager::RequestFont("dogica"));
 	scoreDisplayP2.setPosition(1600.0f, 10.0f);
 	scoreDisplayP2.setCharacterSize(30);
@@ -61,19 +62,115 @@ LevelScreen::LevelScreen(Game* newGamePtr)
 
 	platformTiles.push_back(new Platform(sf::Vector2f(300.0f, 900.0f))); // Create a new Platform object and add it to the vector
 	
+	//Base platform and Collumn 
+	int x1 = 0;
 	
-	int x = 0;
-	
-
-
-	for (int i = 0; i < 100; i++)
+	int y1 = -40;
+	int y2 = -40;
+	//Base Platform
+	for (int i = 0; i < 74; i++)
 	{
 		int j = 25;
 
-		platformTiles.push_back(new Platform(sf::Vector2f(x + j, 900.0f))); // Create a new Platform object and add it to the vector
+		platformTiles.push_back(new Platform(sf::Vector2f(x1 + j, 900.0f))); // Create a new Platform object and add it to the vector
 
-		x = x + j;
+		x1 = x1 + j;
 	}
+	//Left Collumn of play area
+	for (int i = 0; i < 40; i++)
+	{
+		int j = 25;
+
+		platformTiles.push_back(new Platform(sf::Vector2f(0, y1 + j))); // Create a new Platform object and add it to the vector
+
+		y1 = y1 + j;
+		
+	}
+	//Right Collumn of play area
+	for (int i = 0; i < 40; i++)
+	{
+		int j = 25;
+
+		platformTiles.push_back(new Platform(sf::Vector2f(x1 + 25, y2 + j))); // Create a new Platform object and add it to the vector
+
+		y2 = y2 + j;
+	}
+
+	//Bottom Platform 1 (Left)
+
+	int x2 = 50;
+	for (int i = 0; i < 24; i++)
+	{
+		int j = 25;
+
+		platformTiles.push_back(new Platform(sf::Vector2f(x2 + j, 700.0f))); // Create a new Platform object and add it to the vector
+
+		x2 = x2 + j;
+	}
+
+	//Middle Platform 1 (Bottom)
+
+	int x3 = 600;
+	for (int i = 0; i < 24; i++)
+	{
+		int j = 25;
+
+		platformTiles.push_back(new Platform(sf::Vector2f(x3 + j, 600.0f))); // Create a new Platform object and add it to the vector
+
+		x3 = x3 + j;
+	}
+
+	//Bottom Platform 2 (Right)
+
+	int x4 = 1200;
+
+	for (int i = 0; i < 24; i++)
+	{
+		int j = 25;
+
+		platformTiles.push_back(new Platform(sf::Vector2f(x4 + j, 700.0f))); // Create a new Platform object and add it to the vector
+
+		x4 = x4 + j;
+	}
+
+	//Middle Platform 2 (Top)
+
+	int x5 = 725;
+	for (int i = 0; i < 15; i++)
+	{
+		int j = 25;
+
+		platformTiles.push_back(new Platform(sf::Vector2f(x5 + j, 400.0f))); // Create a new Platform object and add it to the vector
+
+		x5 = x5 + j;
+	}
+
+	//Right Platform 2  (Top)
+
+	int x6 = 1200;
+
+	for (int i = 0; i < 24; i++)
+	{
+		int j = 25;
+
+		platformTiles.push_back(new Platform(sf::Vector2f(x6 + j, 250.0f))); // Create a new Platform object and add it to the vector
+
+		x6 = x6 + j;
+	}
+
+	//Left Platform 2  (Top)
+
+	int x7 = 50;
+
+	for (int i = 0; i < 24; i++)
+	{
+		int j = 25;
+
+		platformTiles.push_back(new Platform(sf::Vector2f(x7 + j, 250.0f))); // Create a new Platform object and add it to the vector
+
+		x7 = x7 + j;
+	}
+
 }
 
 void LevelScreen::Update(sf::Time frameTime)
