@@ -9,8 +9,11 @@ class LevelScreen;
 class Platform
 	: public OnScreenActor
 {
+
 public:
-	Platform(sf::Vector2f newPosition);
+	Platform(const sf::Vector2f& positsion);
 private:
+	sf::RectangleShape shape;
+	//Platform(sf::Vector2f newPosition);
 	LevelScreen* currentLevel;
 };

@@ -27,12 +27,17 @@ public:
     void SetOwner(int newOwner);
     void SetAlive(bool newIsAlive);
 
-    // Public member variables
-    int owner; // The number for the player that fired the grenade
-    bool isAlive;
-    LevelScreen* grenadeLevel; // Pointer to the LevelScreen object
+    int GetOwner() const
+    {
+        return owner;
+    }
+
+    bool IsAlive() const;
+  
    
 
 private:
-    // Private data 
+    int owner; // The number for the player that fired the grenade
+    bool isAlive;
+    LevelScreen* grenadeLevel; // Pointer to the LevelScreen object
 };

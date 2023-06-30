@@ -13,7 +13,7 @@ Grenade::Grenade(sf::Vector2f newPosition, sf::Vector2f newFireVelocity, int own
     : PhysicsObject()
     , owner(owner)
     , isAlive(true)
-    , grenadeLevel(0)
+    , grenadeLevel(nullptr)
     
 
     {
@@ -48,6 +48,14 @@ Grenade::Grenade(sf::Vector2f newPosition, sf::Vector2f newFireVelocity, int own
         
     }
 
+  
+
+    bool Grenade::IsAlive() const
+    {
+        return isAlive;
+    }
+
+
     // Set the owner of the grenade
     void Grenade::SetOwner(int newOwner)
     {
@@ -59,6 +67,7 @@ Grenade::Grenade(sf::Vector2f newPosition, sf::Vector2f newFireVelocity, int own
     {
         isAlive = newIsAlive;
     }
+
 
     // Handle collision with another OnScreenActor
     void Grenade::HandleCollision(OnScreenActor& other)

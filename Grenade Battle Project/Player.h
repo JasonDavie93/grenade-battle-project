@@ -29,7 +29,7 @@ public:
 	int takep1Lives(int lifeTake1);
 	int takep2Lives(int lifeTake2);
 
-	LevelScreen* playerLevel;
+	//LevelScreen* playerLevel;
 private:
 	void SetAcceleration() override;
 	sf::Vector2f GetPipPosition(float pipTime);
@@ -56,7 +56,7 @@ private:
 
 	sf::Time fireCooldown;
 	sf::Clock fireTimer;
-
+	LevelScreen* playerLevel;
 	int playerLives;
 	int player1Lives;
 	int player2Lives;

@@ -32,11 +32,13 @@ LevelScreen::LevelScreen(Game* newGamePtr)
 	, cameraView()
 	, gameMusic()
 	, currentLevel()
+	, owner()
 	
 	
 {
 
-
+	
+	
 	//P1 Text Set Up
 	scoreDisplayP1.setFont(AssetManager::RequestFont("dogica"));
 	scoreDisplayP1.setPosition(40.0f, 10.0f);
@@ -62,114 +64,86 @@ LevelScreen::LevelScreen(Game* newGamePtr)
 	player2->SetPosition(700.0f, 700.0f); // Set the position of player 2
 
 	platformTiles.push_back(new Platform(sf::Vector2f(300.0f, 900.0f))); // Create a new Platform object and add it to the vector
-	
-	//Base platform and Collumn 
+// Base platform and Column
 	int x1 = 0;
-	
 	int y1 = -40;
 	int y2 = -40;
-	//Base Platform
+
+	// Base Platform
 	for (int i = 0; i < 74; i++)
 	{
 		int j = 25;
-
-		platformTiles.push_back(new Platform(sf::Vector2f(x1 + j, 900.0f))); // Create a new Platform object and add it to the vector
-
+		platformTiles.push_back(new Platform(sf::Vector2f(x1 + j, 900.0f)));
 		x1 = x1 + j;
 	}
-	//Left Collumn of play area
+
+	// Left Column of the play area
 	for (int i = 0; i < 40; i++)
 	{
 		int j = 25;
-
-		platformTiles.push_back(new Platform(sf::Vector2f(0, y1 + j))); // Create a new Platform object and add it to the vector
-
+		platformTiles.push_back(new Platform(sf::Vector2f(0, y1 + j)));
 		y1 = y1 + j;
-		
 	}
-	//Right Collumn of play area
+
+	// Right Column of the play area
 	for (int i = 0; i < 40; i++)
 	{
 		int j = 25;
-
-		platformTiles.push_back(new Platform(sf::Vector2f(x1 + 25, y2 + j))); // Create a new Platform object and add it to the vector
-
+		platformTiles.push_back(new Platform(sf::Vector2f(x1 + 25, y2 + j)));
 		y2 = y2 + j;
 	}
-
-	//Bottom Platform 1 (Left)
-
+// Bottom Platform 1 (Left)
 	int x2 = 50;
 	for (int i = 0; i < 24; i++)
 	{
 		int j = 25;
-
-		platformTiles.push_back(new Platform(sf::Vector2f(x2 + j, 700.0f))); // Create a new Platform object and add it to the vector
-
+		platformTiles.push_back(new Platform(sf::Vector2f(x2 + j, 700.0f)));
 		x2 = x2 + j;
 	}
 
-	//Middle Platform 1 (Bottom)
-
+	// Middle Platform 1 (Bottom)
 	int x3 = 600;
 	for (int i = 0; i < 24; i++)
 	{
 		int j = 25;
-
-		platformTiles.push_back(new Platform(sf::Vector2f(x3 + j, 600.0f))); // Create a new Platform object and add it to the vector
-
+		platformTiles.push_back(new Platform(sf::Vector2f(x3 + j, 600.0f)));
 		x3 = x3 + j;
 	}
 
-	//Bottom Platform 2 (Right)
-
+	// Bottom Platform 2 (Right)
 	int x4 = 1200;
-
 	for (int i = 0; i < 24; i++)
 	{
 		int j = 25;
-
-		platformTiles.push_back(new Platform(sf::Vector2f(x4 + j, 700.0f))); // Create a new Platform object and add it to the vector
-
+		platformTiles.push_back(new Platform(sf::Vector2f(x4 + j, 700.0f)));
 		x4 = x4 + j;
 	}
 
-	//Middle Platform 2 (Top)
-
+	// Middle Platform 2 (Top)
 	int x5 = 725;
 	for (int i = 0; i < 15; i++)
 	{
 		int j = 25;
-
-		platformTiles.push_back(new Platform(sf::Vector2f(x5 + j, 400.0f))); // Create a new Platform object and add it to the vector
-
+		platformTiles.push_back(new Platform(sf::Vector2f(x5 + j, 400.0f)));
 		x5 = x5 + j;
 	}
 
-	//Right Platform 2  (Top)
-
+	// Right Platform 2 (Top)
 	int x6 = 1200;
-
-	for (int i = 0; i < 24; i++)
+	for (int i = 0; i < 74; i++)
 	{
 		int j = 25;
-
-		platformTiles.push_back(new Platform(sf::Vector2f(x6 + j, 250.0f))); // Create a new Platform object and add it to the vector
-
+		platformTiles.push_back(new Platform(sf::Vector2f(x6 + j, 250.0f)));
 		x6 = x6 + j;
 	}
 
-	//Left Platform 2  (Top)
-
 	int x7 = 50;
-
-	for (int i = 0; i < 24; i++)
+	for (int i = 0; i < 23; i++)
 	{
 		int j = 25;
-
-		platformTiles.push_back(new Platform(sf::Vector2f(x7 + j, 250.0f))); // Create a new Platform object and add it to the vector
-
+		platformTiles.push_back(new Platform(sf::Vector2f(x7 + j, 250.0f)));
 		x7 = x7 + j;
+
 	}
 
 }
@@ -241,12 +215,12 @@ void LevelScreen::Update(sf::Time frameTime)
 		{
 			if (grenadeVector[g]->CheckCollision(*player1))
 			{
-				if (grenadeVector[g]->owner == 1)
+				if (grenadeVector[g]->GetOwner() == 1)
 				{
 					// Handle collision between player 1 and grenade owned by player 1
 					
 				}
-				else if (grenadeVector[g]->owner == 2)
+				else if (grenadeVector[g]->GetOwner() == 2)
 				{
 					player1->SetColliding(true);
 					grenadeVector[g]->SetColliding(true);
@@ -261,7 +235,7 @@ void LevelScreen::Update(sf::Time frameTime)
 
 			if (grenadeVector[g]->CheckCollision(*player2))
 			{
-				if (grenadeVector[g]->owner == 1)
+				if (grenadeVector[g]->GetOwner() == 1)
 				{
 					player2->SetColliding(true);
 					grenadeVector[g]->SetColliding(true);
@@ -272,7 +246,7 @@ void LevelScreen::Update(sf::Time frameTime)
 					
 
 				}
-				else if (grenadeVector[g]->owner == 2)
+				else if (grenadeVector[g]->GetOwner() == 2)
 				{
 					// Handle collision between player 2 and grenade owned by player 2
 				}

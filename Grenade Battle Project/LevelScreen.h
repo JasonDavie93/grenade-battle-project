@@ -18,6 +18,7 @@ class Grenade;
 
 class LevelScreen :
     public Screen
+    
 {
 public:
     LevelScreen(Game* newGamePtr);
@@ -31,8 +32,7 @@ public:
 
     bool CheckGrenadeAlive(bool isGrenadeAlive);
 
-    std::string levelIDstr; // String to store the level ID
-    int levelIDint; // Integer to store the level ID
+   
 
 
 protected:
@@ -53,12 +53,13 @@ private:
     sf::Text scoreDisplayP2;
     int scoreValueP1; // Current score value
     int scoreValueP2;
-
-
+    std::string levelIDstr; // String to store the level ID
+    int levelIDint; // Integer to store the level ID
+    
    
     sf::View cameraView; // View for camera positioning
 
     sf::Music gameMusic; // Music for the game
-
+    int owner;
     int currentLevel;
 };
